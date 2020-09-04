@@ -14,7 +14,6 @@ const main = async () => {
     synchronize: true,
     entities: [House, Apartment, Neighborhood],
   });
-  console.log(process.env.DATABASE);
 };
 
 main();

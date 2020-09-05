@@ -8,21 +8,15 @@ This project is currently in development. No user interation available yet.
 
 ## Installation and Setup Instructions
 
-#### Example:  
-
-Clone down this repository. You will need `node` and `npm` installed globally on your machine.  
+Clone down this repository. You will need `node` and `npm` installed globally on your machine. Yarn is also fine.  
 
 Installation:
 
 `npm install`  
 
-To Run Test Suite:  
+To run the development server:  
 
-`npm test`  
-
-To Start Server:
-
-`npm start`  
+`npm dev`  
 
 To Visit App:
 

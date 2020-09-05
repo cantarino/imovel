@@ -39,7 +39,10 @@ export class House extends BaseEntity {
   @Column({ nullable: true })
   description: string;
 
-  // @Field()
-  @ManyToOne((type) => Neighborhood, (neighborhood) => neighborhood.houses)
+  @Field()
+  @Column()
+  neighborhoodId: number;
+
+  @ManyToOne(() => Neighborhood, (neighborhood) => neighborhood.houses)
   neighborhood: Neighborhood;
 }

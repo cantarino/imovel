@@ -19,4 +19,7 @@ export class HouseInput {
 
   @Field({ nullable: true })
   description: string;
+
+  @Field()
+  neighborhoodId: number;
 }

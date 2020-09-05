@@ -19,7 +19,6 @@ export class Neighborhood extends BaseEntity {
   @Column({ unique: true })
   name: string;
 
-  // @Field()
-  @OneToMany((type) => House, (house) => house.neighborhood)
+  @OneToMany(() => House, (house) => house.neighborhood)
   houses: House[];
 }

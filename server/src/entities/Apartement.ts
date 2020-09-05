@@ -1,14 +1,19 @@
+import { Field, ObjectType } from "type-graphql";
 import { Column, Entity } from "typeorm";
 import { House } from "./House";
 
+@ObjectType()
 @Entity()
 export class Apartment extends House {
+  @Field()
   @Column()
   floor: number;
 
-  @Column()
+  @Field()
+  @Column({ type: "float" })
   rent: number;
 
+  @Field()
   @Column()
   hasDoorman: boolean;
 }

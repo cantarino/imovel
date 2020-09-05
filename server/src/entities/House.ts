@@ -1,35 +1,45 @@
+import { Field, ObjectType } from "type-graphql";
 import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
   BaseEntity,
+  Column,
+  Entity,
   ManyToOne,
+  PrimaryGeneratedColumn,
 } from "typeorm";
 import { Neighborhood } from "./Neighborhood";
 
+@ObjectType()
 @Entity()
 export class House extends BaseEntity {
+  @Field()
   @PrimaryGeneratedColumn()
   id: number;
 
+  @Field()
   @Column()
   bedroomNumber: number;
 
+  @Field()
   @Column()
   suitesNumber: number;
 
+  @Field()
   @Column()
   livingRoomNumber: number;
 
-  @Column()
+  @Field()
+  @Column({ type: "float" })
   size: number;
 
+  @Field()
   @Column()
   hasCloset: boolean;
 
-  @Column()
+  @Field({ nullable: true })
+  @Column({ nullable: true })
   description: string;
 
+  // @Field()
   @ManyToOne((type) => Neighborhood, (neighborhood) => neighborhood.houses)
   neighborhood: Neighborhood;
 }

@@ -14,9 +14,13 @@ Installation:
 
 `npm install`  
 
+To build the application:  
+
+`npm build` 
+
 To run the development server:  
 
-`npm dev`  
+`npm start`  
 
 To Visit App:
 

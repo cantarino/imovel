@@ -13,14 +13,13 @@ import { NeighborhoodResolver } from "./resolvers/neighborhood";
 const main = async () => {
   const conn = await createConnection({
     type: "postgres",
-    database: "imovelDb",
-    username: "christian",
-    password: "",
+    database: process.env.DB_NAME,
+    username: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
     logging: true,
     synchronize: true,
     entities: [House, Apartment, Neighborhood],
   });
-
   const app = express();
 
   const apolloServer = new ApolloServer({

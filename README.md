@@ -18,7 +18,7 @@ To build the application:
 
 `npm build` 
 
-To run the development server:  
+To run the server:  
 
 `npm start`  
 

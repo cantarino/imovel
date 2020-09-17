@@ -1,6 +1,6 @@
 ## ImovelDB
 
-An application used to register houses available for buy and rental, built with Node, Typescript, GraphQL, TypeORM and ...
+An application used to register houses available for buy and rental, built with Node, Typescript, GraphQL, TypeORM and React using NextJs to manage URLs and Chakra-UI as component library
 
 #### Example:
 
@@ -8,7 +8,7 @@ This project is currently in development. No user interation available yet.
 
 ## Installation and Setup Instructions
 
-Clone down this repository. You will need `node` and `npm` installed globally on your machine. `yarn` is also fine.  
+Clone down this repository. You will need `node` and `npm` installed globally on your machine. `yarn` is also fine. The steps need to be repeated in both server and web aplications.  
 
 Installation:
 
@@ -24,10 +24,10 @@ To run the server:
 
 To Visit App:
 
-`localhost:3000/ideas`  
+`localhost:3000/`  
 
 #### Example:  
 
 This was a 4 week long project built during my sixth semester at Computer Engineering. The project goal was to create a web app to register houses for buy and rental.
 
-Originally I wanted to force myself to learn new technologies, thus using node with Typescript and GraphQL. I started this process by following a fullstack project example for node + react + graphql but soon I started doing my own thing.  
+Originally I wanted to force myself to learn new technologies, thus using node with Typescript and GraphQL and React with NextJs. I started this process by following a fullstack project example for node + react + graphql but soon I started doing my own thing.  

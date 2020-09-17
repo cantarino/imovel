@@ -11,7 +11,7 @@ export class Apartment extends House {
 
   @Field()
   @Column({ type: "float" })
-  rent: number;
+  buildingRent: number;
 
   @Field()
   @Column()

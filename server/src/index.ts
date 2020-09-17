@@ -3,6 +3,7 @@ import express from "express";
 import "reflect-metadata";
 import { buildSchema } from "type-graphql";
 import { createConnection } from "typeorm";
+import { Address } from "./entities/Address";
 import { Apartment } from "./entities/Apartement";
 import { House } from "./entities/House";
 import { Neighborhood } from "./entities/Neighborhood";
@@ -18,7 +19,7 @@ const main = async () => {
     password: process.env.DB_PASSWORD,
     logging: true,
     synchronize: true,
-    entities: [House, Apartment, Neighborhood],
+    entities: [House, Apartment, Neighborhood, Address],
   });
   const app = express();
 

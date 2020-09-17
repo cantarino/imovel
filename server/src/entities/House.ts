@@ -3,10 +3,11 @@ import {
   BaseEntity,
   Column,
   Entity,
-  ManyToOne,
+  JoinColumn,
+  OneToOne,
   PrimaryGeneratedColumn,
 } from "typeorm";
-import { Neighborhood } from "./Neighborhood";
+import { Address } from "./Address";
 
 @ObjectType()
 @Entity()
@@ -17,15 +18,19 @@ export class House extends BaseEntity {
 
   @Field()
   @Column()
-  bedroomNumber: number;
+  bedrooms: number;
 
   @Field()
   @Column()
-  suitesNumber: number;
+  suites: number;
 
   @Field()
   @Column()
-  livingRoomNumber: number;
+  livingRooms: number;
+
+  @Field()
+  @Column()
+  parkingSpots: number;
 
   @Field()
   @Column({ type: "float" })
@@ -40,9 +45,14 @@ export class House extends BaseEntity {
   description: string;
 
   @Field()
-  @Column()
-  neighborhoodId: number;
+  @Column({ type: "float" })
+  rent: number;
 
-  @ManyToOne(() => Neighborhood, (neighborhood) => neighborhood.houses)
-  neighborhood: Neighborhood;
+  @Field()
+  @Column()
+  addressId: number;
+
+  @OneToOne(() => Address, (addr) => addr.house)
+  @JoinColumn()
+  address: Address;
 }

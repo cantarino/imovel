@@ -6,7 +6,7 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from "typeorm";
-import { House } from "./House";
+import { Address } from "./Address";
 
 @ObjectType()
 @Entity()
@@ -19,6 +19,6 @@ export class Neighborhood extends BaseEntity {
   @Column({ unique: true })
   name: string;
 
-  @OneToMany(() => House, (house) => house.neighborhood)
-  houses: House[];
+  @OneToMany(() => Address, (addr) => addr.neighborhood)
+  addresses: Address[];
 }

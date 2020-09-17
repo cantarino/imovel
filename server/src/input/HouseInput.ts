@@ -3,13 +3,17 @@ import { Field, InputType } from "type-graphql";
 @InputType()
 export class HouseInput {
   @Field()
-  bedroomNumber: number;
+  bedrooms: number;
 
   @Field()
-  suitesNumber: number;
+  suites: number;
 
   @Field()
-  livingRoomNumber: number;
+  livingRooms: number;
+
+  //Change
+  @Field({ nullable: true })
+  parkingSpots: number;
 
   @Field()
   size: number;

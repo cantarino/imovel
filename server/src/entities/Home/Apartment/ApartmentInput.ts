@@ -1,5 +1,5 @@
 import { Field, InputType } from "type-graphql";
-import { HouseInput } from "./HouseInput";
+import { HouseInput } from "../House/HouseInput";
 
 @InputType()
 export class ApartmentInput extends HouseInput {
@@ -7,7 +7,10 @@ export class ApartmentInput extends HouseInput {
   floor: number;
 
   @Field()
-  rent: number;
+  apartmentNumber: number;
+
+  @Field()
+  buildingRent: number;
 
   @Field()
   hasDoorman: boolean;

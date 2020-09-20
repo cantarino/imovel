@@ -1,4 +1,5 @@
 import { Field, InputType } from "type-graphql";
+import { AddressInput } from "../../Address/AddressInput";
 
 @InputType()
 export class HouseInput {
@@ -11,8 +12,7 @@ export class HouseInput {
   @Field()
   livingRooms: number;
 
-  //Change
-  @Field({ nullable: true })
+  @Field()
   parkingSpots: number;
 
   @Field()
@@ -21,9 +21,15 @@ export class HouseInput {
   @Field()
   hasCloset: boolean;
 
-  @Field({ nullable: true })
-  description: string;
-
   @Field()
-  neighborhoodId: number;
+  rent: number;
+
+  @Field({ nullable: true })
+  description?: string;
+
+  @Field({ nullable: true })
+  addressId?: number;
+
+  @Field({ nullable: true })
+  address?: AddressInput;
 }

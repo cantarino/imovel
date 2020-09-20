@@ -6,7 +6,7 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from "typeorm";
-import { Address } from "./Address";
+import { Address } from "../Address/Address";
 
 @ObjectType()
 @Entity()

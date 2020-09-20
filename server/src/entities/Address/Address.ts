@@ -4,11 +4,13 @@ import {
   Column,
   Entity,
   ManyToOne,
+  OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
 } from "typeorm";
-import { House } from "./House";
-import { Neighborhood } from "./Neighborhood";
+import { Apartment } from "../Home/Apartment/Apartement";
+import { House } from "../Home/House/House";
+import { Neighborhood } from "../Neighborhood/Neighborhood";
 
 @ObjectType()
 @Entity()
@@ -23,6 +25,10 @@ export class Address extends BaseEntity {
 
   @Field()
   @Column()
+  number: number;
+
+  @Field()
+  @Column()
   postalCode: string;
 
   @Field()
@@ -32,10 +38,13 @@ export class Address extends BaseEntity {
   @ManyToOne(() => Neighborhood, (neighborhood) => neighborhood.addresses)
   neighborhood: Neighborhood;
 
-  @Field()
-  @Column()
-  houseId: number;
+  @Field({ nullable: true })
+  @Column({ nullable: true })
+  homeId: number;
 
   @OneToOne(() => House, (house) => house.address)
   house: House;
+
+  @OneToMany(() => Apartment, (apartment) => apartment.address)
+  apartments: Apartment[];
 }

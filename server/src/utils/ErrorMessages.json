@@ -1,0 +1,8 @@
+{
+    "id_not_found": "Registro nāo encontrado",
+    "repeated_entity": "Já existe um registro com os mesmos dados",
+    "repeated_address": "Já existe um registro com o mesmo endereço",
+    "neighborhood_not_found": "Bairro nāo encontrado",
+    "address_not_found": "Endereço não encontrado",
+    "address_needed": "É necessário informar o endereço"
+}

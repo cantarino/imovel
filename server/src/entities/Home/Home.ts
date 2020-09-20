@@ -1,17 +1,9 @@
 import { Field, ObjectType } from "type-graphql";
-import {
-  BaseEntity,
-  Column,
-  Entity,
-  JoinColumn,
-  OneToOne,
-  PrimaryGeneratedColumn,
-} from "typeorm";
-import { Address } from "./Address";
+import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
 @ObjectType()
 @Entity()
-export class House extends BaseEntity {
+export class Home extends BaseEntity {
   @Field()
   @PrimaryGeneratedColumn()
   id: number;
@@ -51,8 +43,4 @@ export class House extends BaseEntity {
   @Field()
   @Column()
   addressId: number;
-
-  @OneToOne(() => Address, (addr) => addr.house)
-  @JoinColumn()
-  address: Address;
 }

@@ -1,8 +1,8 @@
 import { Button, Stack } from "@chakra-ui/core";
 import { Form, Formik } from "formik";
 import React from "react";
-import { InputField } from "../components/InputField";
-import { Wrapper } from "../components/Wrapper";
+import { InputField } from "../../components/commons/InputField";
+import { Wrapper } from "../../components/commons/Wrapper";
 
 interface registerHouseProps {}
 

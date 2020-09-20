@@ -1,0 +1,14 @@
+query Houses{
+  houses{
+    id
+    bedrooms
+    suites
+    livingRooms
+    parkingSpots
+    size
+    hasCloset
+    description
+    rent
+    addressId
+  }
+}

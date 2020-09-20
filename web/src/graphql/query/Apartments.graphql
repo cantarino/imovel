@@ -1,0 +1,18 @@
+query Apartments {
+  apartments {
+    id
+    bedrooms
+    suites
+    livingRooms
+    parkingSpots
+    size
+    hasCloset
+    description
+    rent
+    addressId
+    floor
+    apartmentNumber
+    buildingRent
+    hasDoorman
+  }
+}

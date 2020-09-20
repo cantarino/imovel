@@ -259,6 +259,28 @@ export type RegisterNeighborhoodMutation = (
   ) }
 );
 
+export type ApartmentsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type ApartmentsQuery = (
+  { __typename?: 'Query' }
+  & { apartments: Array<(
+    { __typename?: 'Apartment' }
+    & Pick<Apartment, 'id' | 'bedrooms' | 'suites' | 'livingRooms' | 'parkingSpots' | 'size' | 'hasCloset' | 'description' | 'rent' | 'addressId' | 'floor' | 'apartmentNumber' | 'buildingRent' | 'hasDoorman'>
+  )> }
+);
+
+export type HousesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type HousesQuery = (
+  { __typename?: 'Query' }
+  & { houses: Array<(
+    { __typename?: 'House' }
+    & Pick<House, 'id' | 'bedrooms' | 'suites' | 'livingRooms' | 'parkingSpots' | 'size' | 'hasCloset' | 'description' | 'rent' | 'addressId'>
+  )> }
+);
+
 export type NeighborhoodsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -288,6 +310,50 @@ export const RegisterNeighborhoodDocument = gql`
 
 export function useRegisterNeighborhoodMutation() {
   return Urql.useMutation<RegisterNeighborhoodMutation, RegisterNeighborhoodMutationVariables>(RegisterNeighborhoodDocument);
+};
+export const ApartmentsDocument = gql`
+    query Apartments {
+  apartments {
+    id
+    bedrooms
+    suites
+    livingRooms
+    parkingSpots
+    size
+    hasCloset
+    description
+    rent
+    addressId
+    floor
+    apartmentNumber
+    buildingRent
+    hasDoorman
+  }
+}
+    `;
+
+export function useApartmentsQuery(options: Omit<Urql.UseQueryArgs<ApartmentsQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<ApartmentsQuery>({ query: ApartmentsDocument, ...options });
+};
+export const HousesDocument = gql`
+    query Houses {
+  houses {
+    id
+    bedrooms
+    suites
+    livingRooms
+    parkingSpots
+    size
+    hasCloset
+    description
+    rent
+    addressId
+  }
+}
+    `;
+
+export function useHousesQuery(options: Omit<Urql.UseQueryArgs<HousesQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<HousesQuery>({ query: HousesDocument, ...options });
 };
 export const NeighborhoodsDocument = gql`
     query Neighborhoods {

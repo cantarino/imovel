@@ -1,0 +1,6 @@
+query Neighborhoods{
+  neighborhoods{
+    name,
+    id
+  }
+}

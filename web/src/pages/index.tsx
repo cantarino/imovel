@@ -1,7 +1,13 @@
 import { Button, Input, Select, Stack } from "@chakra-ui/core";
 import React, { useState } from "react";
+import { OperationResult } from "urql";
 import Table from "../components/Table";
 import { Wrapper } from "../components/Wrapper";
+import {
+  RegisterNeighborhoodMutation,
+  useNeighborhoodsQuery,
+  useRegisterNeighborhoodMutation,
+} from "../generated/graphql";
 const USERS = [
   {
     id: 1,
@@ -29,51 +35,85 @@ const USERS = [
   },
 ];
 
+function SelectNeighborhood(props) {
+  return (
+    <Select
+      onChange={(event) => {
+        if (event.target.value == "") props.toggleSelect(true);
+      }}
+      placeholder="Selecione o bairro"
+    >
+      {props.data ? (
+        props.data.neighborhoods.map((x) => (
+          <option value={x.id} key={x.id}>
+            {x.name}
+          </option>
+        ))
+      ) : (
+        <option value="0" key={0}>
+          Carregando...
+        </option>
+      )}
+      <option value="">Outro</option>
+    </Select>
+  );
+}
+
+function RegisterNeighborhood(props) {
+  let input = "";
+  return (
+    <Stack spacing={3}>
+      <Input
+        name="newNeighborhood"
+        placeholder="Informe o novo bairro a ser cadastrado"
+        type="textarea"
+        onChange={(evt) => (input = evt.target.value)}
+      />
+      <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <Button
+          type="submit"
+          variantColor="teal"
+          onClick={async () => {
+            const response: OperationResult<RegisterNeighborhoodMutation> = await props.insertNeighborhood(
+              { neighborhood: input }
+            );
+            if (response.data?.insertNeighborhood?.errors)
+              console.log("error", response.data.insertNeighborhood.errors);
+            props.toggleSelect(false);
+          }}
+        >
+          Cadastrar novo bairro
+        </Button>
+        <Button
+          type="submit"
+          onClick={() => {
+            props.toggleSelect(false);
+          }}
+        >
+          Mostrar bairros cadastrados
+        </Button>
+      </div>
+    </Stack>
+  );
+}
+
 const Index = () => {
   const [insertNewNeighborhood, toggleSelect] = useState(false);
+  const [neighborhoodReponse, getNeighborhoods] = useNeighborhoodsQuery();
+  const [, insertNeighborhood] = useRegisterNeighborhoodMutation();
   return (
     <Wrapper>
       <Stack spacing={3}>
         {!insertNewNeighborhood ? (
-          <Select
-            onChange={(event) => {
-              if (event.target.value == "") toggleSelect(true);
-            }}
-            placeholder="Selecione o bairro"
-          >
-            <option value="option1">Option 1</option>
-            <option value="option2">Option 2</option>
-            <option value="option3">Option 3</option>
-            <option value="">Outro</option>
-          </Select>
+          <SelectNeighborhood
+            data={neighborhoodReponse.data}
+            toggleSelect={toggleSelect}
+          />
         ) : (
-          <Stack spacing={3}>
-            <Input
-              name="newNeighborhood"
-              placeholder="Informe o novo bairro a ser cadastrado"
-              type="textarea"
-            />
-            <div style={{ display: "flex", justifyContent: "space-between" }}>
-              <Button
-                type="submit"
-                variantColor="teal"
-                onClick={() => {
-                  console.log("cadastrar");
-                  toggleSelect(false);
-                }}
-              >
-                Cadastrar novo bairro
-              </Button>
-              <Button
-                type="submit"
-                onClick={() => {
-                  toggleSelect(false);
-                }}
-              >
-                Mostrar bairros cadastrados
-              </Button>
-            </div>
-          </Stack>
+          <RegisterNeighborhood
+            insertNeighborhood={insertNeighborhood}
+            toggleSelect={toggleSelect}
+          />
         )}
         <Table>
           <Table.THead>

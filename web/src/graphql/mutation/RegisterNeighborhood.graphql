@@ -1,0 +1,12 @@
+mutation RegisterNeighborhood($neighborhood: String!){
+  insertNeighborhood(neighborhood: $neighborhood){
+    errors{
+      field,
+      message
+    }
+    neighborhood{
+      name,
+      id
+    }
+  }
+}

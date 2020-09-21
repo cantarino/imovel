@@ -1,5 +1,5 @@
-query Houses{
-  houses{
+query Houses {
+  houses {
     id
     bedrooms
     suites
@@ -10,5 +10,15 @@ query Houses{
     description
     rent
     addressId
+    address {
+      id
+      number
+      street
+      postalCode
+      neighborhood {
+        id
+        name
+      }
+    }
   }
 }

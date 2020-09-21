@@ -35,12 +35,9 @@ export class Address extends BaseEntity {
   @Column()
   neighborhoodId: number;
 
+  @Field(() => Neighborhood, { nullable: true })
   @ManyToOne(() => Neighborhood, (neighborhood) => neighborhood.addresses)
   neighborhood: Neighborhood;
-
-  @Field({ nullable: true })
-  @Column({ nullable: true })
-  homeId: number;
 
   @OneToOne(() => House, (house) => house.address)
   house: House;

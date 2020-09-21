@@ -14,5 +14,15 @@ query Apartments {
     apartmentNumber
     buildingRent
     hasDoorman
+    address {
+      id
+      number
+      street
+      postalCode
+      neighborhood {
+        id
+        name
+      }
+    }
   }
 }

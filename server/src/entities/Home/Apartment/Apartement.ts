@@ -1,5 +1,5 @@
 import { Field, ObjectType } from "type-graphql";
-import { Column, Entity, JoinColumn, ManyToOne } from "typeorm";
+import { Column, Entity, ManyToOne } from "typeorm";
 import { Address } from "../../Address/Address";
 import { Home } from "../Home";
 
@@ -22,7 +22,7 @@ export class Apartment extends Home {
   @Column()
   hasDoorman: boolean;
 
+  @Field(() => Address, { nullable: true })
   @ManyToOne(() => Address, (addr) => addr.apartments)
-  @JoinColumn()
   address: Address;
 }

@@ -51,7 +51,13 @@ export type Address = {
   number: Scalars['Float'];
   postalCode: Scalars['String'];
   neighborhoodId: Scalars['Float'];
-  homeId?: Maybe<Scalars['Float']>;
+  neighborhood?: Maybe<Neighborhood>;
+};
+
+export type Neighborhood = {
+  __typename?: 'Neighborhood';
+  id: Scalars['Float'];
+  name: Scalars['String'];
 };
 
 export type Apartment = {
@@ -70,6 +76,7 @@ export type Apartment = {
   apartmentNumber: Scalars['Float'];
   buildingRent: Scalars['Float'];
   hasDoorman: Scalars['Boolean'];
+  address?: Maybe<Address>;
 };
 
 export type House = {
@@ -84,12 +91,7 @@ export type House = {
   description?: Maybe<Scalars['String']>;
   rent: Scalars['Float'];
   addressId: Scalars['Float'];
-};
-
-export type Neighborhood = {
-  __typename?: 'Neighborhood';
-  id: Scalars['Float'];
-  name: Scalars['String'];
+  address?: Maybe<Address>;
 };
 
 export type Mutation = {
@@ -267,6 +269,14 @@ export type ApartmentsQuery = (
   & { apartments: Array<(
     { __typename?: 'Apartment' }
     & Pick<Apartment, 'id' | 'bedrooms' | 'suites' | 'livingRooms' | 'parkingSpots' | 'size' | 'hasCloset' | 'description' | 'rent' | 'addressId' | 'floor' | 'apartmentNumber' | 'buildingRent' | 'hasDoorman'>
+    & { address?: Maybe<(
+      { __typename?: 'Address' }
+      & Pick<Address, 'id' | 'number' | 'street' | 'postalCode'>
+      & { neighborhood?: Maybe<(
+        { __typename?: 'Neighborhood' }
+        & Pick<Neighborhood, 'id' | 'name'>
+      )> }
+    )> }
   )> }
 );
 
@@ -278,6 +288,14 @@ export type HousesQuery = (
   & { houses: Array<(
     { __typename?: 'House' }
     & Pick<House, 'id' | 'bedrooms' | 'suites' | 'livingRooms' | 'parkingSpots' | 'size' | 'hasCloset' | 'description' | 'rent' | 'addressId'>
+    & { address?: Maybe<(
+      { __typename?: 'Address' }
+      & Pick<Address, 'id' | 'number' | 'street' | 'postalCode'>
+      & { neighborhood?: Maybe<(
+        { __typename?: 'Neighborhood' }
+        & Pick<Neighborhood, 'id' | 'name'>
+      )> }
+    )> }
   )> }
 );
 
@@ -328,6 +346,16 @@ export const ApartmentsDocument = gql`
     apartmentNumber
     buildingRent
     hasDoorman
+    address {
+      id
+      number
+      street
+      postalCode
+      neighborhood {
+        id
+        name
+      }
+    }
   }
 }
     `;
@@ -348,6 +376,16 @@ export const HousesDocument = gql`
     description
     rent
     addressId
+    address {
+      id
+      number
+      street
+      postalCode
+      neighborhood {
+        id
+        name
+      }
+    }
   }
 }
     `;

@@ -13,8 +13,17 @@ import { ApartmentResponse } from "./ApartmentResponse";
 @Resolver()
 export class ApartmentResolver extends HomeResolver {
   @Query(() => [Apartment])
-  async apartments(): Promise<Apartment[]> {
-    return Apartment.find();
+  async apartments(): Promise<Apartment[] | unknown[]> {
+    const apartments = await getRepository(Apartment)
+      .createQueryBuilder("Apartment")
+      .leftJoinAndMapOne("Apartment.address", "Apartment.address", "Address")
+      .leftJoinAndMapOne(
+        "Address.neighborhood",
+        "Address.neighborhood",
+        "Neighborhood"
+      )
+      .getMany();
+    return apartments;
   }
 
   @Query(() => Apartment, { nullable: true })

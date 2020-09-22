@@ -1,0 +1,8 @@
+.justifyContent { 
+    display: flex; 
+    justify-content: space-between; 
+}
+
+.marginTop2 {
+    margin-top: 2%;
+}

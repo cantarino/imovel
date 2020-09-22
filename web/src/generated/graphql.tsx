@@ -30,8 +30,18 @@ export type QueryAddressArgs = {
 };
 
 
+export type QueryApartmentsArgs = {
+  neighborhoodId?: Maybe<Scalars['Int']>;
+};
+
+
 export type QueryApartmentArgs = {
   id: Scalars['Float'];
+};
+
+
+export type QueryHousesArgs = {
+  neighborhoodId?: Maybe<Scalars['Int']>;
 };
 
 
@@ -261,7 +271,9 @@ export type RegisterNeighborhoodMutation = (
   ) }
 );
 
-export type ApartmentsQueryVariables = Exact<{ [key: string]: never; }>;
+export type ApartmentsQueryVariables = Exact<{
+  neighborhoodId?: Maybe<Scalars['Int']>;
+}>;
 
 
 export type ApartmentsQuery = (
@@ -280,7 +292,9 @@ export type ApartmentsQuery = (
   )> }
 );
 
-export type HousesQueryVariables = Exact<{ [key: string]: never; }>;
+export type HousesQueryVariables = Exact<{
+  neighborhoodId?: Maybe<Scalars['Int']>;
+}>;
 
 
 export type HousesQuery = (
@@ -330,8 +344,8 @@ export function useRegisterNeighborhoodMutation() {
   return Urql.useMutation<RegisterNeighborhoodMutation, RegisterNeighborhoodMutationVariables>(RegisterNeighborhoodDocument);
 };
 export const ApartmentsDocument = gql`
-    query Apartments {
-  apartments {
+    query Apartments($neighborhoodId: Int) {
+  apartments(neighborhoodId: $neighborhoodId) {
     id
     bedrooms
     suites
@@ -364,8 +378,8 @@ export function useApartmentsQuery(options: Omit<Urql.UseQueryArgs<ApartmentsQue
   return Urql.useQuery<ApartmentsQuery>({ query: ApartmentsDocument, ...options });
 };
 export const HousesDocument = gql`
-    query Houses {
-  houses {
+    query Houses($neighborhoodId: Int) {
+  houses(neighborhoodId: $neighborhoodId) {
     id
     bedrooms
     suites

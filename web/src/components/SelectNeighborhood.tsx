@@ -1,39 +1,58 @@
-import { Button, Input, Select, Stack, useToast } from "@chakra-ui/core";
+import {
+  Button,
+  FormLabel,
+  Input,
+  Select,
+  Stack,
+  useToast,
+} from "@chakra-ui/core";
 import React, { useState } from "react";
 import {
   useNeighborhoodsQuery,
   useRegisterNeighborhoodMutation,
 } from "../generated/graphql";
+import styles from "../styles/styles.module.css";
 
-interface SelectNeighborhoodProps {}
+interface SelectNeighborhoodProps {
+  selectNeighborhood: any;
+  placeHolder?: string;
+}
 
-export const SelectNeighborhood: React.FC<SelectNeighborhoodProps> = () => {
+export const SelectNeighborhood: React.FC<SelectNeighborhoodProps> = ({
+  selectNeighborhood,
+  placeHolder = "Todos",
+}) => {
   let input = "";
   const toast = useToast();
   const [insertNewNeighborhood, toggleSelect] = useState(false);
-  const [neighborhoodReponse, getNeighborhoods] = useNeighborhoodsQuery();
+  const [{ data, fetching }, getNeighborhoods] = useNeighborhoodsQuery();
   const [, insertNeighborhood] = useRegisterNeighborhoodMutation();
   return !insertNewNeighborhood ? (
-    <Select
-      isDisabled={neighborhoodReponse.fetching}
-      onChange={(event) => {
-        if (event.target.value == "") toggleSelect(true);
-      }}
-      placeholder="Selecione o bairro"
-    >
-      {neighborhoodReponse.data ? (
-        neighborhoodReponse.data.neighborhoods.map((x: any) => (
-          <option value={x.id} key={x.id}>
-            {x.name}
+    <>
+      <FormLabel>Bairro</FormLabel>
+      <Select
+        aria-label="Bairro"
+        isDisabled={fetching}
+        onChange={async (event) => {
+          if (event.target.value == "0") toggleSelect(true);
+          else selectNeighborhood(parseInt(event.target.value));
+        }}
+        placeholder={placeHolder}
+      >
+        {data ? (
+          data.neighborhoods.map((x: any) => (
+            <option value={x.id} key={x.id}>
+              {x.name}
+            </option>
+          ))
+        ) : (
+          <option value="0" key={0}>
+            Carregando...
           </option>
-        ))
-      ) : (
-        <option value="0" key={0}>
-          Carregando...
-        </option>
-      )}
-      <option value="">Outro</option>
-    </Select>
+        )}
+        <option value="0">Outro</option>
+      </Select>
+    </>
   ) : (
     <Stack spacing={3}>
       <Input
@@ -42,7 +61,7 @@ export const SelectNeighborhood: React.FC<SelectNeighborhoodProps> = () => {
         type="textarea"
         onChange={(evt: any) => (input = evt.target.value)}
       />
-      <div style={{ display: "flex", justifyContent: "space-between" }}>
+      <div className={styles.justifyContent}>
         <Button
           type="submit"
           variantColor="teal"

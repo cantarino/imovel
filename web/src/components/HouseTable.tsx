@@ -1,6 +1,6 @@
 import { Button, Image, Stack } from "@chakra-ui/core";
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useState } from "react";
 import { useHousesQuery } from "../generated/graphql";
 import Table from "./commons/Table";
 import { SelectNeighborhood } from "./SelectNeighborhood";
@@ -9,14 +9,21 @@ interface HouseTableProps {}
 
 export const HouseTable: React.FC<HouseTableProps> = () => {
   const router = useRouter();
-  const [housesResponse, getHouses] = useHousesQuery();
+  const [neighborhoodId, setNeighborhoodId] = useState<number | undefined>(
+    undefined
+  );
+  const [{ data }, getHouses] = useHousesQuery({
+    variables: { neighborhoodId },
+  });
   return (
     <Stack mt={2} spacing={3}>
-      <SelectNeighborhood />
+      <SelectNeighborhood
+        selectNeighborhood={(id?: number) => setNeighborhoodId(id)}
+      />
       <Table>
         <Table.THead>
           <Table.THead.TR>
-            <Table.THead.TH>Imagem</Table.THead.TH>
+            <Table.THead.TH>Foto</Table.THead.TH>
             <Table.THead.TH>Quartos</Table.THead.TH>
             <Table.THead.TH>Suítes</Table.THead.TH>
             <Table.THead.TH>Salas de estar</Table.THead.TH>
@@ -27,38 +34,26 @@ export const HouseTable: React.FC<HouseTableProps> = () => {
         </Table.THead>
 
         <Table.TBody>
-          {housesResponse.data ? (
-            housesResponse.data.houses.length > 0 ? (
-              housesResponse.data.houses.map((house) => (
-                <Table.TBody.TR key={house.id}>
-                  <Table.TBody.TD>
-                    <Image
-                      size="2rem"
-                      rounded="full"
-                      src="https://placekitten.com/100/100"
-                      alt="Fluffybuns the destroyer"
-                      mr="12px"
-                    />
-                  </Table.TBody.TD>
-                  <Table.TBody.TD>{house.bedrooms}</Table.TBody.TD>
-                  <Table.TBody.TD>{house.suites}</Table.TBody.TD>
-                  <Table.TBody.TD>{house.livingRooms}</Table.TBody.TD>
-                  <Table.TBody.TD>{house.parkingSpots}</Table.TBody.TD>
-                  <Table.TBody.TD>{house.size}</Table.TBody.TD>
-                  <Table.TBody.TD>{house.rent}</Table.TBody.TD>
-                </Table.TBody.TR>
-              ))
-            ) : (
-              <Table.TBody.TR>
-                <Table.TBody.TD></Table.TBody.TD>
-                <Table.TBody.TD></Table.TBody.TD>
-                <Table.TBody.TD></Table.TBody.TD>
-                <Table.TBody.TD>Nao foi encontrada nenhuma casa</Table.TBody.TD>
-                <Table.TBody.TD></Table.TBody.TD>
-                <Table.TBody.TD></Table.TBody.TD>
-                <Table.TBody.TD></Table.TBody.TD>
+          {data && data.houses.length > 0 ? (
+            data.houses.map((house) => (
+              <Table.TBody.TR key={house.id}>
+                <Table.TBody.TD>
+                  <Image
+                    size="2rem"
+                    rounded="full"
+                    src="https://placekitten.com/100/100"
+                    alt="Fluffybuns the destroyer"
+                    mr="12px"
+                  />
+                </Table.TBody.TD>
+                <Table.TBody.TD>{house.bedrooms}</Table.TBody.TD>
+                <Table.TBody.TD>{house.suites}</Table.TBody.TD>
+                <Table.TBody.TD>{house.livingRooms}</Table.TBody.TD>
+                <Table.TBody.TD>{house.parkingSpots}</Table.TBody.TD>
+                <Table.TBody.TD>{house.size}</Table.TBody.TD>
+                <Table.TBody.TD>{house.rent}</Table.TBody.TD>
               </Table.TBody.TR>
-            )
+            ))
           ) : (
             <Table.TBody.TR>
               <Table.TBody.TD></Table.TBody.TD>

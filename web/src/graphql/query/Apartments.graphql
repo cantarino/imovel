@@ -1,5 +1,5 @@
-query Apartments {
-  apartments {
+query Apartments($neighborhoodId: Int) {
+  apartments(neighborhoodId: $neighborhoodId) {
     id
     bedrooms
     suites

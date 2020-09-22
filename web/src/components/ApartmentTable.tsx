@@ -1,6 +1,6 @@
 import { Button, Image, Stack } from "@chakra-ui/core";
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useState } from "react";
 import { useApartmentsQuery } from "../generated/graphql";
 import Table from "./commons/Table";
 import { SelectNeighborhood } from "./SelectNeighborhood";
@@ -9,14 +9,22 @@ interface ApartmentTableProps {}
 
 export const ApartmentTable: React.FC<ApartmentTableProps> = () => {
   const router = useRouter();
-  const [apartmentsResponse, getApartments] = useApartmentsQuery();
+  const [neighborhoodId, setNeighborhoodId] = useState<number | undefined>(
+    undefined
+  );
+  const [{ data, fetching, error }, getApartments] = useApartmentsQuery({
+    variables: { neighborhoodId },
+  });
+  const refresh = () => getApartments({ neighborhoodId });
   return (
     <Stack mt={2} spacing={3}>
-      <SelectNeighborhood />
+      <SelectNeighborhood
+        selectNeighborhood={(id?: number) => setNeighborhoodId(id)}
+      />
       <Table>
         <Table.THead>
           <Table.THead.TR>
-            <Table.THead.TH>Imagem</Table.THead.TH>
+            <Table.THead.TH>Foto</Table.THead.TH>
             <Table.THead.TH>Quartos</Table.THead.TH>
             <Table.THead.TH>Suítes</Table.THead.TH>
             <Table.THead.TH>Salas de estar</Table.THead.TH>
@@ -28,8 +36,8 @@ export const ApartmentTable: React.FC<ApartmentTableProps> = () => {
         </Table.THead>
 
         <Table.TBody>
-          {apartmentsResponse.data ? (
-            apartmentsResponse.data.apartments.map((apartment) => (
+          {data && data.apartments.length > 0 ? (
+            data.apartments.map((apartment) => (
               <Table.TBody.TR key={apartment.id}>
                 <Table.TBody.TD>
                   <Image
@@ -51,9 +59,16 @@ export const ApartmentTable: React.FC<ApartmentTableProps> = () => {
             ))
           ) : (
             <Table.TBody.TR>
+              <Table.TBody.TD></Table.TBody.TD>
+              <Table.TBody.TD></Table.TBody.TD>
+              <Table.TBody.TD></Table.TBody.TD>
               <Table.TBody.TD>
                 Nao foi encontrado nenhum apartamento
               </Table.TBody.TD>
+              <Table.TBody.TD></Table.TBody.TD>
+              <Table.TBody.TD></Table.TBody.TD>
+              <Table.TBody.TD></Table.TBody.TD>
+              <Table.TBody.TD></Table.TBody.TD>
             </Table.TBody.TR>
           )}
         </Table.TBody>

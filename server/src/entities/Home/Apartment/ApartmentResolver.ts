@@ -1,5 +1,5 @@
 import { FieldError } from "src/utils/FieldError";
-import { Arg, Mutation, Query, Resolver } from "type-graphql";
+import { Arg, Int, Mutation, Query, Resolver } from "type-graphql";
 import { getConnection, getRepository } from "typeorm";
 import {
   ID_NOT_FOUND_ERROR,
@@ -13,8 +13,14 @@ import { ApartmentResponse } from "./ApartmentResponse";
 @Resolver()
 export class ApartmentResolver extends HomeResolver {
   @Query(() => [Apartment])
-  async apartments(): Promise<Apartment[] | unknown[]> {
-    const apartments = await getRepository(Apartment)
+  async apartments(
+    @Arg("neighborhoodId", () => Int, { nullable: true })
+    neighborhoodId?: number
+  ): Promise<Apartment[]> {
+    let whereClauses = "";
+    if (neighborhoodId) whereClauses = "Neighborhood.id = :id";
+    const apartments = await getConnection()
+      .getRepository(Apartment)
       .createQueryBuilder("Apartment")
       .leftJoinAndMapOne("Apartment.address", "Apartment.address", "Address")
       .leftJoinAndMapOne(
@@ -22,6 +28,7 @@ export class ApartmentResolver extends HomeResolver {
         "Address.neighborhood",
         "Neighborhood"
       )
+      .where(whereClauses, { id: neighborhoodId })
       .getMany();
     return apartments;
   }

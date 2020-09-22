@@ -1,4 +1,4 @@
-import { Arg, Mutation, Query, Resolver } from "type-graphql";
+import { Arg, Int, Mutation, Query, Resolver } from "type-graphql";
 import { getConnection, getRepository } from "typeorm";
 import {
   ID_NOT_FOUND_ERROR,
@@ -12,8 +12,14 @@ import { HouseResponse } from "./HouseResponse";
 @Resolver()
 export class HouseResolver extends HomeResolver {
   @Query(() => [House])
-  async houses(): Promise<House[] | undefined[]> {
-    const houses = await getRepository(House)
+  async houses(
+    @Arg("neighborhoodId", () => Int, { nullable: true })
+    neighborhoodId?: number
+  ): Promise<House[]> {
+    let whereClauses = "";
+    if (neighborhoodId) whereClauses = "Neighborhood.id = :id";
+    const houses = await getConnection()
+      .getRepository(House)
       .createQueryBuilder("House")
       .leftJoinAndMapOne("House.address", "House.address", "Address")
       .leftJoinAndMapOne(
@@ -21,6 +27,7 @@ export class HouseResolver extends HomeResolver {
         "Address.neighborhood",
         "Neighborhood"
       )
+      .where(whereClauses, { id: neighborhoodId })
       .getMany();
     return houses;
   }

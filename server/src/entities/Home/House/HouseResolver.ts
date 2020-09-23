@@ -40,11 +40,10 @@ export class HouseResolver extends HomeResolver {
   @Mutation(() => HouseResponse)
   async insertHouse(@Arg("data") data: HouseInput): Promise<HouseResponse> {
     //Check address;
-    let addressCheck = await this.CheckForAddressErrors(data);
+    let addressCheck = await this.checkForAddressErrors(data);
     let selectedAddressId: number;
     if ("id" in addressCheck) selectedAddressId = addressCheck.id;
     else return { errors: addressCheck };
-
     //Check house address
     const result = await getRepository(House)
       .createQueryBuilder("house")
@@ -53,10 +52,19 @@ export class HouseResolver extends HomeResolver {
       })
       .getOne();
     if (result) return { errors: [REPEATED_ADDRESS_ERROR] };
-
     //Insert new house
     const newHouseId = await (
-      await House.insert({ ...data, addressId: selectedAddressId })
+      await House.insert({
+        addressId: selectedAddressId,
+        hasCloset: data.hasCloset,
+        bedrooms: data.bedrooms,
+        size: data.size,
+        suites: data.suites,
+        livingRooms: data.livingRooms,
+        parkingSpots: data.parkingSpots,
+        rent: data.rent,
+        description: data.description,
+      })
     ).raw[0];
     let id = parseInt(newHouseId.id);
     let newHouse = await House.findOne(id);
@@ -69,7 +77,7 @@ export class HouseResolver extends HomeResolver {
     @Arg("data") data: HouseInput
   ): Promise<HouseResponse> {
     //Check address;
-    let addressCheck = await this.CheckForAddressErrors(data);
+    let addressCheck = await this.checkForAddressErrors(data);
     let selectedAddressId: number;
     if ("id" in addressCheck) selectedAddressId = addressCheck.id;
     else return { errors: addressCheck };
@@ -83,7 +91,7 @@ export class HouseResolver extends HomeResolver {
       .createQueryBuilder("house")
       .where(
         `house.addressId = :addressId
-      AND house.id != :id`,
+        AND house.id != :id`,
         {
           addressId: selectedAddressId,
           id: id,
@@ -96,7 +104,17 @@ export class HouseResolver extends HomeResolver {
     const update = await getConnection()
       .createQueryBuilder()
       .update(House)
-      .set({ ...data })
+      .set({
+        addressId: selectedAddressId,
+        hasCloset: data.hasCloset,
+        bedrooms: data.bedrooms,
+        size: data.size,
+        suites: data.suites,
+        livingRooms: data.livingRooms,
+        parkingSpots: data.parkingSpots,
+        rent: data.rent,
+        description: data.description,
+      })
       .where("id = :id", {
         id,
       })

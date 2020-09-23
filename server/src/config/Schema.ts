@@ -5,7 +5,7 @@ import { ApartmentResolver } from "../entities/Home/Apartment/ApartmentResolver"
 import { HouseResolver } from "../entities/Home/House/HouseResolver";
 import { NeighborhoodResolver } from "../entities/Neighborhood/NeighborhoodResolver";
 
-export async function BuildGraphQLSchema() {
+export async function buildGraphQLSchema() {
   return buildSchema({
     resolvers: [
       HouseResolver,

@@ -7,11 +7,11 @@ import {
   useToast,
 } from "@chakra-ui/core";
 import React, { useState } from "react";
+import styles from "../assets/styles/styles.module.css";
 import {
   useNeighborhoodsQuery,
   useRegisterNeighborhoodMutation,
 } from "../generated/graphql";
-import styles from "../styles/styles.module.css";
 
 interface SelectNeighborhoodProps {
   selectNeighborhood: any;

@@ -67,7 +67,7 @@ export class ApartmentResolver extends HomeResolver {
     @Arg("data") data: ApartmentInput
   ): Promise<ApartmentResponse> {
     //Check address;
-    let addressCheck = await this.CheckForAddressErrors(data);
+    let addressCheck = await this.checkForAddressErrors(data);
     let selectedAddressId: number;
     if ("id" in addressCheck) selectedAddressId = addressCheck.id;
     else return { errors: addressCheck };
@@ -95,7 +95,7 @@ export class ApartmentResolver extends HomeResolver {
     @Arg("data") data: ApartmentInput
   ): Promise<ApartmentResponse> {
     //Check address;
-    let addressCheck = await this.CheckForAddressErrors(data);
+    let addressCheck = await this.checkForAddressErrors(data);
     let selectedAddressId: number;
     if ("id" in addressCheck) selectedAddressId = addressCheck.id;
     else return { errors: addressCheck };

@@ -18,7 +18,7 @@ export class HouseInput {
   @Field()
   size: number;
 
-  @Field()
+  @Field(() => Boolean)
   hasCloset: boolean;
 
   @Field()

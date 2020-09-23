@@ -252,6 +252,33 @@ export type NeighborhoodResponse = {
   neighborhood?: Maybe<Neighborhood>;
 };
 
+export type RegisterHouseMutationVariables = Exact<{
+  data: HouseInput;
+}>;
+
+
+export type RegisterHouseMutation = (
+  { __typename?: 'Mutation' }
+  & { insertHouse: (
+    { __typename?: 'HouseResponse' }
+    & { house?: Maybe<(
+      { __typename?: 'House' }
+      & Pick<House, 'id' | 'bedrooms' | 'suites' | 'livingRooms' | 'parkingSpots' | 'size' | 'hasCloset' | 'description' | 'rent' | 'addressId'>
+      & { address?: Maybe<(
+        { __typename?: 'Address' }
+        & Pick<Address, 'id' | 'number' | 'street' | 'postalCode'>
+        & { neighborhood?: Maybe<(
+          { __typename?: 'Neighborhood' }
+          & Pick<Neighborhood, 'id' | 'name'>
+        )> }
+      )> }
+    )>, errors?: Maybe<Array<(
+      { __typename?: 'FieldError' }
+      & Pick<FieldError, 'field' | 'message'>
+    )>> }
+  ) }
+);
+
 export type RegisterNeighborhoodMutationVariables = Exact<{
   neighborhood: Scalars['String'];
 }>;
@@ -325,6 +352,42 @@ export type NeighborhoodsQuery = (
 );
 
 
+export const RegisterHouseDocument = gql`
+    mutation RegisterHouse($data: HouseInput!) {
+  insertHouse(data: $data) {
+    house {
+      id
+      bedrooms
+      suites
+      livingRooms
+      parkingSpots
+      size
+      hasCloset
+      description
+      rent
+      addressId
+      address {
+        id
+        number
+        street
+        postalCode
+        neighborhood {
+          id
+          name
+        }
+      }
+    }
+    errors {
+      field
+      message
+    }
+  }
+}
+    `;
+
+export function useRegisterHouseMutation() {
+  return Urql.useMutation<RegisterHouseMutation, RegisterHouseMutationVariables>(RegisterHouseDocument);
+};
 export const RegisterNeighborhoodDocument = gql`
     mutation RegisterNeighborhood($neighborhood: String!) {
   insertNeighborhood(neighborhood: $neighborhood) {

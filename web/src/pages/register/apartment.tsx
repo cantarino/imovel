@@ -1,10 +1,10 @@
 import { Box, Button, Stack } from "@chakra-ui/core";
 import { Form, Formik } from "formik";
 import React, { useState } from "react";
+import styles from "../../assets/styles/styles.module.css";
 import { InputField } from "../../components/commons/InputField";
 import { Wrapper } from "../../components/commons/Wrapper";
 import { SelectNeighborhood } from "../../components/SelectNeighborhood";
-import styles from "../../styles/styles.module.css";
 
 interface registerApartmentProps {}
 

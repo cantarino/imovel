@@ -42,7 +42,7 @@ export class HomeResolver {
     return await Address.findOne(parseInt(newAddress.id));
   }
 
-  async CheckForAddressErrors(
+  async checkForAddressErrors(
     data: HouseInput
   ): Promise<FieldError[] | Address> {
     if (data.addressId != null) {

@@ -5,7 +5,7 @@ import { Apartment } from "../entities/Home/Apartment/Apartement";
 import { House } from "../entities/Home/House/House";
 import { Neighborhood } from "../entities/Neighborhood/Neighborhood";
 
-export async function CreateDatabaseConection() {
+export async function createDatabaseConection() {
   return createConnection({
     type: "postgres",
     database: process.env.DB_NAME,

@@ -1,14 +1,14 @@
 import { ApolloServer } from "apollo-server-express";
 import express from "express";
 import "reflect-metadata";
-import { CreateDatabaseConection } from "./config/Database";
-import { BuildGraphQLSchema } from "./config/Schema";
+import { createDatabaseConection } from "./config/Database";
+import { buildGraphQLSchema } from "./config/Schema";
 
 const main = async () => {
-  const conn = await CreateDatabaseConection();
+  const conn = await createDatabaseConection();
   const app = express();
   const apolloServer = new ApolloServer({
-    schema: await BuildGraphQLSchema(),
+    schema: await buildGraphQLSchema(),
     context: ({ req, res }) => ({ req, res }),
   });
 

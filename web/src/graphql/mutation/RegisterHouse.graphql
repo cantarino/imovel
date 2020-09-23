@@ -1,0 +1,30 @@
+mutation RegisterHouse($data: HouseInput!) {
+  insertHouse(data: $data) {
+    house {
+      id
+      bedrooms
+      suites
+      livingRooms
+      parkingSpots
+      size
+      hasCloset
+      description
+      rent
+      addressId
+      address {
+        id
+        number
+        street
+        postalCode
+        neighborhood {
+          id
+          name
+        }
+      }
+    }
+    errors {
+      field
+      message
+    }
+  }
+}

@@ -28,13 +28,13 @@ export class Home extends BaseEntity {
   @Column({ type: "float" })
   size: number;
 
-  @Field()
-  @Column()
+  @Field(() => Boolean)
+  @Column({ type: "boolean" })
   hasCloset: boolean;
 
   @Field({ nullable: true })
   @Column({ nullable: true })
-  description: string;
+  description?: string;
 
   @Field()
   @Column({ type: "float" })

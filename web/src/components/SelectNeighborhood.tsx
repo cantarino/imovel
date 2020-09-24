@@ -3,11 +3,11 @@ import {
   FormLabel,
   Input,
   Select,
+  SimpleGrid,
   Stack,
   useToast,
 } from "@chakra-ui/core";
 import React, { useState } from "react";
-import styles from "../assets/styles/styles.module.css";
 import {
   useNeighborhoodsQuery,
   useRegisterNeighborhoodMutation,
@@ -61,7 +61,7 @@ export const SelectNeighborhood: React.FC<SelectNeighborhoodProps> = ({
         type="textarea"
         onChange={(evt: any) => (input = evt.target.value)}
       />
-      <div className={styles.justifyContent}>
+      <SimpleGrid minChildWidth="220px" spacing={4}>
         <Button
           type="submit"
           variantColor="teal"
@@ -102,7 +102,7 @@ export const SelectNeighborhood: React.FC<SelectNeighborhoodProps> = ({
         >
           Mostrar bairros cadastrados
         </Button>
-      </div>
+      </SimpleGrid>
     </Stack>
   );
 };

@@ -2,10 +2,6 @@
 
 An application used to register houses available for buy and rental, built with Node, Typescript, GraphQL, TypeORM and React using NextJs to manage URLs and Chakra-UI as component library
 
-#### Example:
-
-This project is currently in development. No user interation available yet.
-
 ## Installation and Setup Instructions
 
 Clone down this repository. You will need `node` and `npm` installed globally on your machine. `yarn` is also fine. The steps need to be repeated in both server and web aplications.  
@@ -25,6 +21,10 @@ To run the server:
 To Visit App:
 
 `localhost:3000/`  
+
+To see the GraphQL queries and run them on your own:
+
+`localhost:4000/graphql`  
 
 #### Example:  
 

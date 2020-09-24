@@ -1,17 +1,29 @@
-import { Button, Image, Stack } from "@chakra-ui/core";
+import {
+  Button,
+  IconButton,
+  Image,
+  Stack,
+  useDisclosure,
+} from "@chakra-ui/core";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
-import { useApartmentsQuery } from "../generated/graphql";
+import {
+  useApartmentsQuery,
+  useDeleteApartmentMutation,
+} from "../generated/graphql";
 import Table from "./commons/Table";
+import { DeleteModal } from "./DeleteModal";
 import { SelectNeighborhood } from "./SelectNeighborhood";
 
 interface ApartmentTableProps {}
 
 export const ApartmentTable: React.FC<ApartmentTableProps> = () => {
   const router = useRouter();
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const [neighborhoodId, setNeighborhoodId] = useState<number | undefined>(
     undefined
   );
+  const [, deleteApartment] = useDeleteApartmentMutation();
   const [{ data, fetching, error }, getApartments] = useApartmentsQuery({
     variables: { neighborhoodId },
   });
@@ -32,6 +44,7 @@ export const ApartmentTable: React.FC<ApartmentTableProps> = () => {
             <Table.THead.TH>Área</Table.THead.TH>
             <Table.THead.TH>Aluguel</Table.THead.TH>
             <Table.THead.TH>Condomínio</Table.THead.TH>
+            <Table.THead.TH></Table.THead.TH>
           </Table.THead.TR>
         </Table.THead>
 
@@ -55,6 +68,24 @@ export const ApartmentTable: React.FC<ApartmentTableProps> = () => {
                 <Table.TBody.TD>{apartment.size}</Table.TBody.TD>
                 <Table.TBody.TD>{apartment.rent}</Table.TBody.TD>
                 <Table.TBody.TD>{apartment.buildingRent}</Table.TBody.TD>
+                <Table.TBody.TD>
+                  <IconButton
+                    variant="outline"
+                    variantColor="red"
+                    aria-label="delete"
+                    icon="delete"
+                    onClick={onOpen}
+                  />
+                  <DeleteModal
+                    onDelete={() => {
+                      deleteApartment({ id: apartment.id }).then(() =>
+                        getApartments({ requestPolicy: "network-only" })
+                      );
+                    }}
+                    isOpen={isOpen}
+                    onClose={onClose}
+                  />
+                </Table.TBody.TD>
               </Table.TBody.TR>
             ))
           ) : (
@@ -75,13 +106,12 @@ export const ApartmentTable: React.FC<ApartmentTableProps> = () => {
       </Table>
       <Button
         mt={2}
-        ml={"70%"}
         leftIcon="add"
         variantColor="teal"
         variant="solid"
         onClick={() => router.push("/register/apartment")}
       >
-        Cadastrar novo apartamento
+        Cadastrar apartamento
       </Button>
     </Stack>
   );

@@ -4,16 +4,17 @@ import {
   FormControl,
   FormErrorMessage,
   Heading,
+  SimpleGrid,
   Stack,
   useToast,
 } from "@chakra-ui/core";
 import { Form, Formik } from "formik";
-import React, { useState } from "react";
+import { useRouter } from "next/router";
+import React from "react";
 import * as Yup from "yup";
-import styles from "../../assets/styles/styles.module.css";
-import { InputField } from "../../components/commons/InputField";
+import { InputField } from "../../components/commons/Inputs/InputField";
+import { SwitchField } from "../../components/commons/Inputs/SwitchField";
 import { Wrapper } from "../../components/commons/Wrapper";
-import { YesNoSelect } from "../../components/commons/YesNoSelect";
 import { SelectNeighborhood } from "../../components/SelectNeighborhood";
 import { useRegisterHouseMutation } from "../../generated/graphql";
 
@@ -48,13 +49,13 @@ const RegisterHouseSchema = Yup.object().shape({
 });
 
 const RegisterHouse: React.FC<registerHouseProps> = ({}) => {
+  const router = useRouter();
   const toast = useToast();
-  const [hasCloset, toggleCloset] = useState<boolean>(true);
   const [, registerHouse] = useRegisterHouseMutation();
   return (
     <Wrapper>
       <Heading size={"2xl"} mb={4}>
-        Cadastrar nova casa
+        Cadastrar casa
       </Heading>
       <Formik
         validationSchema={RegisterHouseSchema}
@@ -66,7 +67,7 @@ const RegisterHouse: React.FC<registerHouseProps> = ({}) => {
           livingRooms: "",
           parkingSpots: "",
           size: "",
-          hasCloset: hasCloset,
+          hasCloset: false,
           description: "",
           rent: "",
           //address
@@ -78,7 +79,7 @@ const RegisterHouse: React.FC<registerHouseProps> = ({}) => {
         onSubmit={async (values) => {
           const response = await registerHouse({
             data: {
-              hasCloset,
+              hasCloset: values.hasCloset,
               bedrooms: parseInt(values.bedrooms),
               size: parseInt(values.size),
               suites: parseInt(values.suites),
@@ -121,7 +122,7 @@ const RegisterHouse: React.FC<registerHouseProps> = ({}) => {
         {({ isSubmitting, errors, values }) => (
           <Form>
             <Stack spacing={4}>
-              <Box className={styles.justifyContent}>
+              <SimpleGrid minChildWidth="200px" spacing={4}>
                 <InputField
                   name="bedrooms"
                   placeholder="Informe a quantidade"
@@ -140,28 +141,21 @@ const RegisterHouse: React.FC<registerHouseProps> = ({}) => {
                   label="Salas de estar"
                   type="number"
                 />
-              </Box>
-              <Box className={styles.justifyContent}>
+              </SimpleGrid>
+              <SimpleGrid minChildWidth="200px" spacing={4}>
                 <InputField
-                  className={styles.w30}
                   name="parkingSpots"
                   placeholder="Informe a quantidade"
                   label="Vagas"
                   type="number"
                 />
                 <InputField
-                  className={styles.w30}
                   name="size"
                   placeholder="Informe a área"
                   label="Área"
                   type="number"
                 />
-                <YesNoSelect
-                  className={styles.w30}
-                  label={"Armário embutido?"}
-                  selectOption={(opt: boolean) => toggleCloset(opt)}
-                />
-              </Box>
+              </SimpleGrid>
               <Box>
                 <InputField
                   name="rent"
@@ -215,14 +209,22 @@ const RegisterHouse: React.FC<registerHouseProps> = ({}) => {
                   type="textarea"
                 />
               </Box>
-              <Button
-                mt={2}
-                type="submit"
-                isLoading={isSubmitting}
-                variantColor="teal"
-              >
-                Cadastrar
-              </Button>
+              <SwitchField
+                color="green"
+                swSize="lg"
+                name="hasCloset"
+                label="Armário embutido?"
+              />
+              <SimpleGrid minChildWidth="200px" spacing={4}>
+                <Button
+                  type="submit"
+                  isLoading={isSubmitting}
+                  variantColor="teal"
+                >
+                  Cadastrar
+                </Button>
+                <Button onClick={() => router.push("/")}>Voltar</Button>
+              </SimpleGrid>
             </Stack>
           </Form>
         )}

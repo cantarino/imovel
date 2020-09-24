@@ -1,20 +1,29 @@
-import { Button, Image, Stack } from "@chakra-ui/core";
+import {
+  Button,
+  IconButton,
+  Image,
+  Stack,
+  useDisclosure,
+} from "@chakra-ui/core";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
-import { useHousesQuery } from "../generated/graphql";
+import { useDeleteHouseMutation, useHousesQuery } from "../generated/graphql";
 import Table from "./commons/Table";
+import { DeleteModal } from "./DeleteModal";
 import { SelectNeighborhood } from "./SelectNeighborhood";
 
 interface HouseTableProps {}
 
 export const HouseTable: React.FC<HouseTableProps> = () => {
   const router = useRouter();
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const [neighborhoodId, setNeighborhoodId] = useState<number | undefined>(
     undefined
   );
   const [{ data }, getHouses] = useHousesQuery({
     variables: { neighborhoodId },
   });
+  const [, deleteHouse] = useDeleteHouseMutation();
   return (
     <Stack mt={2} spacing={3}>
       <SelectNeighborhood
@@ -30,6 +39,7 @@ export const HouseTable: React.FC<HouseTableProps> = () => {
             <Table.THead.TH>Vagas</Table.THead.TH>
             <Table.THead.TH>Área</Table.THead.TH>
             <Table.THead.TH>Aluguel</Table.THead.TH>
+            <Table.THead.TH></Table.THead.TH>
           </Table.THead.TR>
         </Table.THead>
 
@@ -52,6 +62,24 @@ export const HouseTable: React.FC<HouseTableProps> = () => {
                 <Table.TBody.TD>{house.parkingSpots}</Table.TBody.TD>
                 <Table.TBody.TD>{house.size}</Table.TBody.TD>
                 <Table.TBody.TD>{house.rent}</Table.TBody.TD>
+                <Table.TBody.TD>
+                  <IconButton
+                    variant="outline"
+                    variantColor="red"
+                    aria-label="delete"
+                    icon="delete"
+                    onClick={onOpen}
+                  />
+                  <DeleteModal
+                    onDelete={() => {
+                      deleteHouse({ id: house.id }).then(() =>
+                        getHouses({ requestPolicy: "network-only" })
+                      );
+                    }}
+                    isOpen={isOpen}
+                    onClose={onClose}
+                  />
+                </Table.TBody.TD>
               </Table.TBody.TR>
             ))
           ) : (
@@ -69,13 +97,12 @@ export const HouseTable: React.FC<HouseTableProps> = () => {
       </Table>
       <Button
         mt={2}
-        ml={"70%"}
         leftIcon="add"
         variantColor="teal"
         variant="solid"
         onClick={() => router.push("/register/house")}
       >
-        Cadastrar nova casa
+        Cadastrar casa
       </Button>
     </Stack>
   );

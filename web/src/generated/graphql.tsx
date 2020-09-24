@@ -149,7 +149,7 @@ export type MutationUpdateApartmentArgs = {
 
 
 export type MutationDeleteApartmentArgs = {
-  id: Scalars['Float'];
+  id: Scalars['Int'];
 };
 
 
@@ -165,7 +165,7 @@ export type MutationUpdateHouseArgs = {
 
 
 export type MutationDeleteHouseArgs = {
-  id: Scalars['Float'];
+  id: Scalars['Int'];
 };
 
 
@@ -251,6 +251,53 @@ export type NeighborhoodResponse = {
   errors?: Maybe<Array<FieldError>>;
   neighborhood?: Maybe<Neighborhood>;
 };
+
+export type DeleteApartmentMutationVariables = Exact<{
+  id: Scalars['Int'];
+}>;
+
+
+export type DeleteApartmentMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'deleteApartment'>
+);
+
+export type DeleteHouseMutationVariables = Exact<{
+  id: Scalars['Int'];
+}>;
+
+
+export type DeleteHouseMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'deleteHouse'>
+);
+
+export type RegisterApartmentMutationVariables = Exact<{
+  data: ApartmentInput;
+}>;
+
+
+export type RegisterApartmentMutation = (
+  { __typename?: 'Mutation' }
+  & { insertApartment: (
+    { __typename?: 'ApartmentResponse' }
+    & { apartment?: Maybe<(
+      { __typename?: 'Apartment' }
+      & Pick<Apartment, 'id' | 'bedrooms' | 'suites' | 'livingRooms' | 'parkingSpots' | 'size' | 'hasCloset' | 'description' | 'rent' | 'addressId' | 'floor' | 'apartmentNumber' | 'buildingRent' | 'hasDoorman'>
+      & { address?: Maybe<(
+        { __typename?: 'Address' }
+        & Pick<Address, 'id' | 'number' | 'street' | 'postalCode'>
+        & { neighborhood?: Maybe<(
+          { __typename?: 'Neighborhood' }
+          & Pick<Neighborhood, 'id' | 'name'>
+        )> }
+      )> }
+    )>, errors?: Maybe<Array<(
+      { __typename?: 'FieldError' }
+      & Pick<FieldError, 'field' | 'message'>
+    )>> }
+  ) }
+);
 
 export type RegisterHouseMutationVariables = Exact<{
   data: HouseInput;
@@ -352,6 +399,64 @@ export type NeighborhoodsQuery = (
 );
 
 
+export const DeleteApartmentDocument = gql`
+    mutation DeleteApartment($id: Int!) {
+  deleteApartment(id: $id)
+}
+    `;
+
+export function useDeleteApartmentMutation() {
+  return Urql.useMutation<DeleteApartmentMutation, DeleteApartmentMutationVariables>(DeleteApartmentDocument);
+};
+export const DeleteHouseDocument = gql`
+    mutation DeleteHouse($id: Int!) {
+  deleteHouse(id: $id)
+}
+    `;
+
+export function useDeleteHouseMutation() {
+  return Urql.useMutation<DeleteHouseMutation, DeleteHouseMutationVariables>(DeleteHouseDocument);
+};
+export const RegisterApartmentDocument = gql`
+    mutation RegisterApartment($data: ApartmentInput!) {
+  insertApartment(data: $data) {
+    apartment {
+      id
+      bedrooms
+      suites
+      livingRooms
+      parkingSpots
+      size
+      hasCloset
+      description
+      rent
+      addressId
+      floor
+      apartmentNumber
+      buildingRent
+      hasDoorman
+      address {
+        id
+        number
+        street
+        postalCode
+        neighborhood {
+          id
+          name
+        }
+      }
+    }
+    errors {
+      field
+      message
+    }
+  }
+}
+    `;
+
+export function useRegisterApartmentMutation() {
+  return Urql.useMutation<RegisterApartmentMutation, RegisterApartmentMutationVariables>(RegisterApartmentDocument);
+};
 export const RegisterHouseDocument = gql`
     mutation RegisterHouse($data: HouseInput!) {
   insertHouse(data: $data) {

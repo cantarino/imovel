@@ -1,0 +1,34 @@
+mutation RegisterApartment($data: ApartmentInput!) {
+  insertApartment(data: $data) {
+    apartment {
+      id
+      bedrooms
+      suites
+      livingRooms
+      parkingSpots
+      size
+      hasCloset
+      description
+      rent
+      addressId
+      floor
+      apartmentNumber
+      buildingRent
+      hasDoorman
+      address {
+        id
+        number
+        street
+        postalCode
+        neighborhood {
+          id
+          name
+        }
+      }
+    }
+    errors {
+      field
+      message
+    }
+  }
+}

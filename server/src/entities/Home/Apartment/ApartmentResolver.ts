@@ -82,7 +82,21 @@ export class ApartmentResolver extends HomeResolver {
 
     //Insert new apt
     const apartmentId = await (
-      await Apartment.insert({ ...data, addressId: selectedAddressId })
+      await Apartment.insert({
+        addressId: selectedAddressId,
+        hasCloset: data.hasCloset,
+        bedrooms: data.bedrooms,
+        size: data.size,
+        suites: data.suites,
+        livingRooms: data.livingRooms,
+        parkingSpots: data.parkingSpots,
+        rent: data.rent,
+        description: data.description,
+        hasDoorman: data.hasDoorman,
+        floor: data.floor,
+        apartmentNumber: data.apartmentNumber,
+        buildingRent: data.buildingRent,
+      })
     ).raw[0];
     let id = parseInt(apartmentId.id);
     let newApartment = await Apartment.findOne(id);
@@ -117,7 +131,21 @@ export class ApartmentResolver extends HomeResolver {
     const result = await getConnection()
       .createQueryBuilder()
       .update(Apartment)
-      .set({ ...data, addressId: selectedAddressId })
+      .set({
+        addressId: selectedAddressId,
+        hasCloset: data.hasCloset,
+        bedrooms: data.bedrooms,
+        size: data.size,
+        suites: data.suites,
+        livingRooms: data.livingRooms,
+        parkingSpots: data.parkingSpots,
+        rent: data.rent,
+        description: data.description,
+        hasDoorman: data.hasDoorman,
+        floor: data.floor,
+        apartmentNumber: data.apartmentNumber,
+        buildingRent: data.buildingRent,
+      })
       .where("id = :id", {
         id,
       })
@@ -130,7 +158,7 @@ export class ApartmentResolver extends HomeResolver {
   }
 
   @Mutation(() => Boolean)
-  async deleteApartment(@Arg("id") id: number): Promise<boolean> {
+  async deleteApartment(@Arg("id", () => Int) id: number): Promise<boolean> {
     await Apartment.delete(id);
     return true;
   }

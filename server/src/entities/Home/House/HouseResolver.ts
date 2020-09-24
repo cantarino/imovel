@@ -125,7 +125,7 @@ export class HouseResolver extends HomeResolver {
   }
 
   @Mutation(() => Boolean)
-  async deleteHouse(@Arg("id") id: number): Promise<boolean> {
+  async deleteHouse(@Arg("id", () => Int) id: number): Promise<boolean> {
     await House.delete(id);
     return true;
   }

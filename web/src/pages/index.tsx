@@ -1,12 +1,22 @@
-import { Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/core";
+import {
+  Heading,
+  Tab,
+  TabList,
+  TabPanel,
+  TabPanels,
+  Tabs,
+} from "@chakra-ui/core";
 import React from "react";
-import { ApartmentTable } from "../components/ApartmentTable";
 import { Wrapper } from "../components/commons/Wrapper";
-import { HouseTable } from "../components/HouseTable";
+import { ApartmentGrid } from "../components/grid/ApartmentGrid";
+import { HouseGrid } from "../components/grid/HouseGrid";
 
 const Index = () => {
   return (
     <Wrapper>
+      <Heading size={"2xl"} mb={4}>
+        ImóvelDB
+      </Heading>
       <Tabs variant="soft-rounded" variantColor="teal">
         <TabList>
           <Tab>Apartmentos</Tab>
@@ -14,10 +24,10 @@ const Index = () => {
         </TabList>
         <TabPanels>
           <TabPanel>
-            <ApartmentTable />
+            <ApartmentGrid />
           </TabPanel>
           <TabPanel>
-            <HouseTable />
+            <HouseGrid />
           </TabPanel>
         </TabPanels>
       </Tabs>

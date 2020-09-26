@@ -15,7 +15,7 @@ import * as Yup from "yup";
 import { InputField } from "../../components/commons/Inputs/InputField";
 import { SwitchField } from "../../components/commons/Inputs/SwitchField";
 import { Wrapper } from "../../components/commons/Wrapper";
-import { SelectNeighborhood } from "../../components/SelectNeighborhood";
+import { SelectNeighborhood } from "../../components/select/SelectNeighborhood";
 import { useRegisterApartmentMutation } from "../../generated/graphql";
 
 interface registerApartmentProps {}
@@ -256,6 +256,7 @@ const RegisterApartment: React.FC<registerApartmentProps> = ({}) => {
               </SimpleGrid>
               <Box>
                 <InputField
+                  textarea
                   name="description"
                   placeholder="Informe alguma descriçāo adicional"
                   label="Descrição"

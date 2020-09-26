@@ -1,5 +1,7 @@
 import {
+  Box,
   Button,
+  Flex,
   FormLabel,
   Input,
   Select,
@@ -11,15 +13,19 @@ import React, { useState } from "react";
 import {
   useNeighborhoodsQuery,
   useRegisterNeighborhoodMutation,
-} from "../generated/graphql";
+} from "../../generated/graphql";
 
 interface SelectNeighborhoodProps {
   selectNeighborhood: any;
   placeHolder?: string;
+  flex?: boolean;
+  noRegister?: boolean;
 }
 
 export const SelectNeighborhood: React.FC<SelectNeighborhoodProps> = ({
   selectNeighborhood,
+  flex,
+  noRegister,
   placeHolder = "Todos",
 }) => {
   let input = "";
@@ -27,9 +33,11 @@ export const SelectNeighborhood: React.FC<SelectNeighborhoodProps> = ({
   const [insertNewNeighborhood, toggleSelect] = useState(false);
   const [{ data, fetching }, getNeighborhoods] = useNeighborhoodsQuery();
   const [, insertNeighborhood] = useRegisterNeighborhoodMutation();
+  let FlexOrBox = Box;
+  if (flex) FlexOrBox = Flex;
   return !insertNewNeighborhood ? (
-    <>
-      <FormLabel>Bairro</FormLabel>
+    <FlexOrBox>
+      <FormLabel mt={flex ? 2 : ""}>Bairro</FormLabel>
       <Select
         aria-label="Bairro"
         isDisabled={fetching}
@@ -50,9 +58,9 @@ export const SelectNeighborhood: React.FC<SelectNeighborhoodProps> = ({
             Carregando...
           </option>
         )}
-        <option value="0">Outro</option>
+        {!noRegister ? <option value="0">Outro</option> : null}
       </Select>
-    </>
+    </FlexOrBox>
   ) : (
     <Stack spacing={3}>
       <Input

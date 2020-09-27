@@ -8,6 +8,7 @@ import {
   SimpleGrid,
   Text,
   useDisclosure,
+  useToast,
 } from "@chakra-ui/core";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
@@ -15,10 +16,12 @@ import {
   House,
   useDeleteHouseMutation,
   useHousesQuery,
+  useUpdateHouseMutation,
 } from "../../generated/graphql";
 import { getImagesUrls } from "../../utils/getImage";
 import { DeleteModal } from "../modal/DeleteModal";
 import { DetailModal } from "../modal/DetailModal";
+import { EditHouseModal } from "../modal/EditHouseModal";
 import { SelectNeighborhood } from "../select/SelectNeighborhood";
 
 interface HouseGridProps {}
@@ -38,7 +41,9 @@ export const HouseGrid: React.FC<HouseGridProps> = () => {
     fetchData();
   }, []);
 
-  //modal hooks
+  //toast hook
+  const toast = useToast();
+
   //modal hooks
   const {
     isOpen: isDeleteOpen,
@@ -49,6 +54,11 @@ export const HouseGrid: React.FC<HouseGridProps> = () => {
     isOpen: isInfoOpen,
     onOpen: onInfoOpen,
     onClose: onInfoClose,
+  } = useDisclosure();
+  const {
+    isOpen: isEditOpen,
+    onOpen: onEditOpen,
+    onClose: onEditClose,
   } = useDisclosure();
 
   //neighborhood hooks
@@ -61,6 +71,7 @@ export const HouseGrid: React.FC<HouseGridProps> = () => {
     variables: { neighborhoodId },
   });
   const [, deleteHouse] = useDeleteHouseMutation();
+  const [, updateHouse] = useUpdateHouseMutation();
   const [selectedHouse, setSelectedHouse] = useState<House | undefined>(
     undefined
   );
@@ -113,24 +124,27 @@ export const HouseGrid: React.FC<HouseGridProps> = () => {
                   <Text mt={3}>R$ {house.rent.toFixed(2)}</Text>
                   <Text mt={3}>{house.description?.substring(0, 50)}</Text>
                   <Flex justify="flex-end" align="right">
-                    <Box mr={3}>
-                      <IconButton
-                        size="sm"
-                        variantColor="blue"
-                        aria-label="delete"
-                        icon="info"
-                        onClick={() => {
-                          setSelectedHouse(house as House);
-                          onInfoOpen();
-                        }}
-                      />
-                      <DetailModal
-                        images={images}
-                        house={selectedHouse}
-                        isOpen={isInfoOpen}
-                        onClose={onInfoClose}
-                      />
-                    </Box>
+                    <IconButton
+                      mr={3}
+                      size="sm"
+                      aria-label="edit"
+                      icon="edit"
+                      onClick={() => {
+                        setSelectedHouse(house as House);
+                        onEditOpen();
+                      }}
+                    />
+                    <IconButton
+                      mr={3}
+                      size="sm"
+                      variantColor="blue"
+                      aria-label="delete"
+                      icon="info"
+                      onClick={() => {
+                        setSelectedHouse(house as House);
+                        onInfoOpen();
+                      }}
+                    />
                     <Box>
                       <IconButton
                         size="sm"
@@ -154,6 +168,44 @@ export const HouseGrid: React.FC<HouseGridProps> = () => {
               </Flex>
             </Box>
           ))}
+          <DetailModal
+            images={images}
+            house={selectedHouse}
+            isOpen={isInfoOpen}
+            onClose={onInfoClose}
+          />
+          <EditHouseModal
+            house={selectedHouse}
+            isOpen={isEditOpen}
+            onClose={onEditClose}
+            onSave={(data: any) => {
+              updateHouse({ data, id: selectedHouse!.id }).then((res) => {
+                let errors = res.data?.updateHouse?.errors;
+                if (errors) {
+                  errors.forEach((error) => {
+                    toast({
+                      title: "Erro",
+                      description: error.message,
+                      position: "top-right",
+                      status: "error",
+                      duration: 4000,
+                      isClosable: true,
+                    });
+                  });
+                } else {
+                  toast({
+                    title: "Sucesso",
+                    description: "Casa atualizada com sucesso",
+                    position: "top-right",
+                    status: "success",
+                    duration: 7000,
+                    isClosable: true,
+                  });
+                  getHouses({ requestPolicy: "network-only" });
+                }
+              });
+            }}
+          />
         </SimpleGrid>
       ) : (
         <Text fontSize="3xl" textAlign="center" mt={10}>

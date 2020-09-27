@@ -19,6 +19,7 @@ query Apartments($neighborhoodId: Int) {
       number
       street
       postalCode
+      neighborhoodId
       neighborhood {
         id
         name

@@ -1,0 +1,24 @@
+mutation UpdateApartment($data: ApartmentInput!, $id: Float!) {
+  updateApartment(data: $data, id: $id) {
+    apartment {
+      id
+      bedrooms
+      suites
+      livingRooms
+      parkingSpots
+      size
+      hasCloset
+      description
+      rent
+      addressId
+      floor
+      apartmentNumber
+      buildingRent
+      hasDoorman
+    }
+    errors {
+      message
+      field
+    }
+  }
+}

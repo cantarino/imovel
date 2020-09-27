@@ -15,6 +15,7 @@ query Houses($neighborhoodId: Int) {
       number
       street
       postalCode
+      neighborhoodId
       neighborhood {
         id
         name

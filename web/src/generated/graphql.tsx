@@ -345,6 +345,46 @@ export type RegisterNeighborhoodMutation = (
   ) }
 );
 
+export type UpdateApartmentMutationVariables = Exact<{
+  data: ApartmentInput;
+  id: Scalars['Float'];
+}>;
+
+
+export type UpdateApartmentMutation = (
+  { __typename?: 'Mutation' }
+  & { updateApartment: (
+    { __typename?: 'ApartmentResponse' }
+    & { apartment?: Maybe<(
+      { __typename?: 'Apartment' }
+      & Pick<Apartment, 'id' | 'bedrooms' | 'suites' | 'livingRooms' | 'parkingSpots' | 'size' | 'hasCloset' | 'description' | 'rent' | 'addressId' | 'floor' | 'apartmentNumber' | 'buildingRent' | 'hasDoorman'>
+    )>, errors?: Maybe<Array<(
+      { __typename?: 'FieldError' }
+      & Pick<FieldError, 'message' | 'field'>
+    )>> }
+  ) }
+);
+
+export type UpdateHouseMutationVariables = Exact<{
+  data: HouseInput;
+  id: Scalars['Float'];
+}>;
+
+
+export type UpdateHouseMutation = (
+  { __typename?: 'Mutation' }
+  & { updateHouse: (
+    { __typename?: 'HouseResponse' }
+    & { house?: Maybe<(
+      { __typename?: 'House' }
+      & Pick<House, 'id' | 'bedrooms' | 'suites' | 'livingRooms' | 'parkingSpots' | 'size' | 'hasCloset' | 'description' | 'rent' | 'addressId'>
+    )>, errors?: Maybe<Array<(
+      { __typename?: 'FieldError' }
+      & Pick<FieldError, 'message' | 'field'>
+    )>> }
+  ) }
+);
+
 export type ApartmentsQueryVariables = Exact<{
   neighborhoodId?: Maybe<Scalars['Int']>;
 }>;
@@ -357,7 +397,7 @@ export type ApartmentsQuery = (
     & Pick<Apartment, 'id' | 'bedrooms' | 'suites' | 'livingRooms' | 'parkingSpots' | 'size' | 'hasCloset' | 'description' | 'rent' | 'addressId' | 'floor' | 'apartmentNumber' | 'buildingRent' | 'hasDoorman'>
     & { address?: Maybe<(
       { __typename?: 'Address' }
-      & Pick<Address, 'id' | 'number' | 'street' | 'postalCode'>
+      & Pick<Address, 'id' | 'number' | 'street' | 'postalCode' | 'neighborhoodId'>
       & { neighborhood?: Maybe<(
         { __typename?: 'Neighborhood' }
         & Pick<Neighborhood, 'id' | 'name'>
@@ -378,7 +418,7 @@ export type HousesQuery = (
     & Pick<House, 'id' | 'bedrooms' | 'suites' | 'livingRooms' | 'parkingSpots' | 'size' | 'hasCloset' | 'description' | 'rent' | 'addressId'>
     & { address?: Maybe<(
       { __typename?: 'Address' }
-      & Pick<Address, 'id' | 'number' | 'street' | 'postalCode'>
+      & Pick<Address, 'id' | 'number' | 'street' | 'postalCode' | 'neighborhoodId'>
       & { neighborhood?: Maybe<(
         { __typename?: 'Neighborhood' }
         & Pick<Neighborhood, 'id' | 'name'>
@@ -511,6 +551,62 @@ export const RegisterNeighborhoodDocument = gql`
 export function useRegisterNeighborhoodMutation() {
   return Urql.useMutation<RegisterNeighborhoodMutation, RegisterNeighborhoodMutationVariables>(RegisterNeighborhoodDocument);
 };
+export const UpdateApartmentDocument = gql`
+    mutation UpdateApartment($data: ApartmentInput!, $id: Float!) {
+  updateApartment(data: $data, id: $id) {
+    apartment {
+      id
+      bedrooms
+      suites
+      livingRooms
+      parkingSpots
+      size
+      hasCloset
+      description
+      rent
+      addressId
+      floor
+      apartmentNumber
+      buildingRent
+      hasDoorman
+    }
+    errors {
+      message
+      field
+    }
+  }
+}
+    `;
+
+export function useUpdateApartmentMutation() {
+  return Urql.useMutation<UpdateApartmentMutation, UpdateApartmentMutationVariables>(UpdateApartmentDocument);
+};
+export const UpdateHouseDocument = gql`
+    mutation UpdateHouse($data: HouseInput!, $id: Float!) {
+  updateHouse(data: $data, id: $id) {
+    house {
+      id
+      bedrooms
+      suites
+      livingRooms
+      parkingSpots
+      size
+      hasCloset
+      description
+      rent
+      addressId
+    }
+    errors {
+      message
+      field
+    }
+  }
+}
+    `;
+
+export function useUpdateHouseMutation() {
+  return Urql.useMutation<UpdateHouseMutation, UpdateHouseMutationVariables>(UpdateHouseDocument);
+};
 export const ApartmentsDocument = gql`
     query Apartments($neighborhoodId: Int) {
   apartments(neighborhoodId: $neighborhoodId) {
@@ -533,6 +629,7 @@ export const ApartmentsDocument = gql`
       number
       street
       postalCode
+      neighborhoodId
       neighborhood {
         id
         name
@@ -563,6 +660,7 @@ export const HousesDocument = gql`
       number
       street
       postalCode
+      neighborhoodId
       neighborhood {
         id
         name

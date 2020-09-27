@@ -8,6 +8,7 @@ import {
   SimpleGrid,
   Text,
   useDisclosure,
+  useToast,
 } from "@chakra-ui/core";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
@@ -15,10 +16,12 @@ import {
   Apartment,
   useApartmentsQuery,
   useDeleteApartmentMutation,
+  useUpdateApartmentMutation,
 } from "../../generated/graphql";
 import { getImagesUrls } from "../../utils/getImage";
 import { DeleteModal } from "../modal/DeleteModal";
 import { DetailModal } from "../modal/DetailModal";
+import { EditApartmentModal } from "../modal/EditApartmentModal";
 import { SelectNeighborhood } from "../select/SelectNeighborhood";
 
 interface ApartmentGridProps {}
@@ -49,6 +52,14 @@ export const ApartmentGrid: React.FC<ApartmentGridProps> = () => {
     onOpen: onInfoOpen,
     onClose: onInfoClose,
   } = useDisclosure();
+  const {
+    isOpen: isEditOpen,
+    onOpen: onEditOpen,
+    onClose: onEditClose,
+  } = useDisclosure();
+
+  //toast hook
+  const toast = useToast();
 
   //neighborhood hook
   const [neighborhoodId, setNeighborhoodId] = useState<number | undefined>(
@@ -57,7 +68,8 @@ export const ApartmentGrid: React.FC<ApartmentGridProps> = () => {
 
   //Apartment hooks
   const [, deleteApartment] = useDeleteApartmentMutation();
-  const [{ data, fetching, error }, getApartments] = useApartmentsQuery({
+  const [, updateApartment] = useUpdateApartmentMutation();
+  const [{ data }, getApartments] = useApartmentsQuery({
     variables: { neighborhoodId },
   });
   const [selectedApartment, setSelectedApartment] = useState<
@@ -106,24 +118,27 @@ export const ApartmentGrid: React.FC<ApartmentGridProps> = () => {
                   <Text mt={3}>R$ {apt.rent.toFixed(2)}</Text>
                   <Text mt={3}>{apt.description?.substring(0, 50)}</Text>
                   <Flex justify="flex-end" align="right">
-                    <Box mr={3}>
-                      <IconButton
-                        size="sm"
-                        variantColor="blue"
-                        aria-label="delete"
-                        icon="info"
-                        onClick={() => {
-                          setSelectedApartment(apt as Apartment);
-                          onInfoOpen();
-                        }}
-                      />
-                      <DetailModal
-                        images={images}
-                        apartment={selectedApartment}
-                        isOpen={isInfoOpen}
-                        onClose={onInfoClose}
-                      />
-                    </Box>
+                    <IconButton
+                      mr={3}
+                      size="sm"
+                      aria-label="edit"
+                      icon="edit"
+                      onClick={() => {
+                        setSelectedApartment(apt as Apartment);
+                        onEditOpen();
+                      }}
+                    />
+                    <IconButton
+                      mr={3}
+                      size="sm"
+                      variantColor="blue"
+                      aria-label="info"
+                      icon="info"
+                      onClick={() => {
+                        setSelectedApartment(apt as Apartment);
+                        onInfoOpen();
+                      }}
+                    />
                     <Box>
                       <IconButton
                         size="sm"
@@ -147,6 +162,46 @@ export const ApartmentGrid: React.FC<ApartmentGridProps> = () => {
               </Flex>
             </Box>
           ))}
+          <EditApartmentModal
+            apartment={selectedApartment}
+            isOpen={isEditOpen}
+            onClose={onEditClose}
+            onSave={(data: any) => {
+              updateApartment({ data, id: selectedApartment!.id }).then(
+                (res) => {
+                  let errors = res.data?.updateApartment?.errors;
+                  if (errors) {
+                    errors.forEach((error) => {
+                      toast({
+                        title: "Erro",
+                        description: error.message,
+                        position: "top-right",
+                        status: "error",
+                        duration: 4000,
+                        isClosable: true,
+                      });
+                    });
+                  } else {
+                    toast({
+                      title: "Sucesso",
+                      description: "Apartamento atualizado com sucesso",
+                      position: "top-right",
+                      status: "success",
+                      duration: 7000,
+                      isClosable: true,
+                    });
+                    getApartments({ requestPolicy: "network-only" });
+                  }
+                }
+              );
+            }}
+          />
+          <DetailModal
+            images={images}
+            apartment={selectedApartment}
+            isOpen={isInfoOpen}
+            onClose={onInfoClose}
+          />
         </SimpleGrid>
       ) : (
         <Text fontSize="3xl" textAlign="center" mt={10}>

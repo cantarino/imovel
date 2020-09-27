@@ -20,12 +20,14 @@ interface SelectNeighborhoodProps {
   placeHolder?: string;
   flex?: boolean;
   noRegister?: boolean;
+  initialValue?: number;
 }
 
 export const SelectNeighborhood: React.FC<SelectNeighborhoodProps> = ({
   selectNeighborhood,
   flex,
   noRegister,
+  initialValue,
   placeHolder = "Todos",
 }) => {
   let input = "";
@@ -39,6 +41,7 @@ export const SelectNeighborhood: React.FC<SelectNeighborhoodProps> = ({
     <FlexOrBox>
       <FormLabel mt={flex ? 2 : ""}>Bairro</FormLabel>
       <Select
+        defaultValue={initialValue}
         aria-label="Bairro"
         isDisabled={fetching}
         onChange={async (event) => {

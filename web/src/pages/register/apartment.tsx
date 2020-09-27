@@ -1,61 +1,13 @@
-import {
-  Box,
-  Button,
-  FormControl,
-  FormErrorMessage,
-  Heading,
-  SimpleGrid,
-  Stack,
-  useToast,
-} from "@chakra-ui/core";
-import { Form, Formik } from "formik";
+import { Heading, useToast } from "@chakra-ui/core";
+import { Formik } from "formik";
 import { useRouter } from "next/router";
 import React from "react";
-import * as Yup from "yup";
-import { InputField } from "../../components/commons/Inputs/InputField";
-import { SwitchField } from "../../components/commons/Inputs/SwitchField";
 import { Wrapper } from "../../components/commons/Wrapper";
-import { SelectNeighborhood } from "../../components/select/SelectNeighborhood";
+import { ApartmentForm } from "../../components/form/ApartmentForm";
 import { useRegisterApartmentMutation } from "../../generated/graphql";
+import { RegisterApartmentSchema } from "../../utils/schemas";
 
 interface registerApartmentProps {}
-
-const RegisterApartmentSchema = Yup.object().shape({
-  bedrooms: Yup.number()
-    .min(1, "Somente números positivos")
-    .required("Campo obrigatório"),
-  suites: Yup.number()
-    .min(1, "Somente números positivos")
-    .required("Campo obrigatório"),
-  livingRooms: Yup.number()
-    .min(1, "Somente números positivos")
-    .required("Campo obrigatório"),
-  parkingSpots: Yup.number()
-    .min(1, "Somente números positivos")
-    .required("Campo obrigatório"),
-  size: Yup.number()
-    .min(1, "Somente números positivos")
-    .required("Campo obrigatório"),
-  postalCode: Yup.string().required("Campo obrigatório"),
-  neighborhoodId: Yup.number().required("Campo obrigatório"),
-  street: Yup.string().required("Campo obrigatório"),
-  number: Yup.number()
-    .min(1, "Somente números positivos")
-    .required("Campo obrigatório"),
-  rent: Yup.number()
-    .min(0, "Somente números positivos")
-    .required("Campo obrigatório"),
-  description: Yup.string(),
-  floor: Yup.number()
-    .min(0, "Somente números positivos")
-    .required("Campo obrigatório"),
-  apartmentNumber: Yup.number()
-    .min(0, "Somente números positivos")
-    .required("Campo obrigatório"),
-  buildingRent: Yup.number()
-    .min(0, "Somente números positivos")
-    .required("Campo obrigatório"),
-});
 
 const RegisterApartment: React.FC<registerApartmentProps> = ({}) => {
   const router = useRouter();
@@ -138,143 +90,12 @@ const RegisterApartment: React.FC<registerApartmentProps> = ({}) => {
         }}
       >
         {({ isSubmitting, errors, values }) => (
-          <Form>
-            <Stack spacing={4}>
-              <SimpleGrid columns={3} spacing={4}>
-                <InputField
-                  name="bedrooms"
-                  placeholder="Informe a quantidade"
-                  label="Quartos"
-                  type="number"
-                />
-                <InputField
-                  name="suites"
-                  placeholder="Informe a quantidade"
-                  label="Suítes"
-                  type="number"
-                />
-                <InputField
-                  name="livingRooms"
-                  placeholder="Informe a quantidade"
-                  label="Salas de estar"
-                  type="number"
-                />
-              </SimpleGrid>
-              <SimpleGrid columns={2} spacing={4}>
-                <InputField
-                  name="parkingSpots"
-                  placeholder="Informe a quantidade"
-                  label="Vagas"
-                  type="number"
-                />
-                <InputField
-                  name="size"
-                  placeholder="Informe a área"
-                  label="Área"
-                  type="number"
-                />
-              </SimpleGrid>
-              <Box>
-                <InputField
-                  name="rent"
-                  placeholder="Informe o aluguel do apartamento"
-                  label="Aluguel"
-                  type="number"
-                />
-              </Box>
-              <Box>
-                <FormControl isInvalid={!!errors.neighborhoodId}>
-                  <SelectNeighborhood
-                    selectNeighborhood={(id?: number) => {
-                      values.neighborhoodId = id?.toString() ?? "";
-                    }}
-                    placeHolder={"Selecione o bairro"}
-                  />
-                  {errors.neighborhoodId ? (
-                    <FormErrorMessage>{errors.neighborhoodId}</FormErrorMessage>
-                  ) : null}
-                </FormControl>
-              </Box>
-              <Box>
-                <InputField
-                  name="postalCode"
-                  placeholder="Informe o CEP"
-                  label="CEP"
-                  type="textarea"
-                />
-              </Box>
-              <Box>
-                <InputField
-                  name="street"
-                  placeholder="Informe o nome da rua"
-                  label="Rua"
-                  type="textarea"
-                />
-              </Box>
-              <Box>
-                <InputField
-                  name="number"
-                  placeholder="Informe o número do prédio"
-                  label="Número"
-                  type="number"
-                />
-              </Box>
-              <SimpleGrid minChildWidth="200px" spacing={4}>
-                <InputField
-                  name="floor"
-                  placeholder="Informe o andar"
-                  label="Andar"
-                  type="number"
-                />
-                <InputField
-                  name="apartmentNumber"
-                  placeholder="Informe o número do apartamento"
-                  label="Apartamento"
-                  type="number"
-                />
-                <InputField
-                  name="buildingRent"
-                  placeholder="Informe o valor"
-                  label="Condomínio"
-                  type="number"
-                />
-              </SimpleGrid>
-              <SimpleGrid minChildWidth="200px" spacing={4}>
-                <SwitchField
-                  color="green"
-                  swSize="lg"
-                  name="hasCloset"
-                  label="Armário embutido?"
-                  type="number"
-                />
-                <SwitchField
-                  color="green"
-                  swSize="lg"
-                  name="hasDoorman"
-                  label="Possui porteiro?"
-                />
-              </SimpleGrid>
-              <Box>
-                <InputField
-                  textarea
-                  name="description"
-                  placeholder="Informe alguma descriçāo adicional"
-                  label="Descrição"
-                  type="textarea"
-                />
-              </Box>
-              <SimpleGrid minChildWidth="200px" spacing={4}>
-                <Button
-                  type="submit"
-                  isLoading={isSubmitting}
-                  variantColor="teal"
-                >
-                  Cadastrar
-                </Button>
-                <Button onClick={() => router.push("/")}>Voltar</Button>
-              </SimpleGrid>
-            </Stack>
-          </Form>
+          <ApartmentForm
+            isSubmitting={isSubmitting}
+            errors={errors}
+            values={values}
+            onClose={() => {}}
+          />
         )}
       </Formik>
     </Wrapper>

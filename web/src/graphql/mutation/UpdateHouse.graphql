@@ -1,0 +1,20 @@
+mutation UpdateHouse($data: HouseInput!, $id: Float!) {
+  updateHouse(data: $data, id: $id) {
+    house {
+      id
+      bedrooms
+      suites
+      livingRooms
+      parkingSpots
+      size
+      hasCloset
+      description
+      rent
+      addressId
+    }
+    errors {
+      message
+      field
+    }
+  }
+}

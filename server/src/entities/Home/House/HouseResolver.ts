@@ -28,6 +28,7 @@ export class HouseResolver extends HomeResolver {
         "Neighborhood"
       )
       .where(whereClauses, { id: neighborhoodId })
+      .orderBy("House.id", "ASC")
       .getMany();
     return houses;
   }

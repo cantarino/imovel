@@ -122,7 +122,13 @@ export const HouseGrid: React.FC<HouseGridProps> = () => {
                     {house.livingRooms} Salas
                   </Text>
                   <Text mt={3}>R$ {house.rent.toFixed(2)}</Text>
-                  <Text mt={3}>{house.description?.substring(0, 50)}</Text>
+                  <Text mt={3}>
+                    {house.description
+                      ? house.description.length > 50
+                        ? house.description.substring(0, 50).concat("...")
+                        : house.description
+                      : ""}
+                  </Text>
                   <Flex justify="flex-end" align="right">
                     <IconButton
                       mr={3}

@@ -35,7 +35,7 @@ export const ApartmentForm: React.FC<ApartmentFormProps> = ({
   const router = useRouter();
 
   return (
-    <Form onChange={() => console.log("teste")}>
+    <Form>
       <Stack spacing={4}>
         <SimpleGrid columns={3} spacing={4}>
           <InputField

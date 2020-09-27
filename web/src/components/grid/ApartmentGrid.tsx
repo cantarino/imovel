@@ -116,7 +116,11 @@ export const ApartmentGrid: React.FC<ApartmentGridProps> = () => {
                     {apt.livingRooms} Salas
                   </Text>
                   <Text mt={3}>R$ {apt.rent.toFixed(2)}</Text>
-                  <Text mt={3}>{apt.description?.substring(0, 50)}</Text>
+                  {apt.description
+                    ? apt.description.length > 50
+                      ? apt.description.substring(0, 50).concat("...")
+                      : apt.description
+                    : " "}
                   <Flex justify="flex-end" align="right">
                     <IconButton
                       mr={3}

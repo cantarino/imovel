@@ -19,13 +19,21 @@ export const SwitchField: React.FC<SwitchProps> = ({
   swSize = "sm",
   style,
   className,
+  value,
   ...props
 }) => {
   const [field, { error }] = useField(props);
+  console.log(field);
   return (
     <FormControl className={className} isInvalid={!!error}>
       <FormLabel htmlFor={field.name}>{label}</FormLabel>
-      <Switch {...field} {...props} size={swSize} id={field.name} />
+      <Switch
+        defaultIsChecked={field.value}
+        {...field}
+        {...props}
+        size={swSize}
+        id={field.name}
+      />
       {error ? <FormErrorMessage>{error}</FormErrorMessage> : null}
     </FormControl>
   );

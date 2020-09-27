@@ -1,3 +1,4 @@
+import path from "path";
 import "reflect-metadata";
 import { createConnection } from "typeorm";
 import { Address } from "../entities/Address/Address";
@@ -12,7 +13,8 @@ export async function createDatabaseConection() {
     username: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
     logging: true,
-    synchronize: true,
+    synchronize: false,
+    migrations: [path.join(__dirname, "./../migrations/*")],
     entities: [House, Apartment, Neighborhood, Address],
   });
 }

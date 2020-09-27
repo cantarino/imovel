@@ -1,7 +1,7 @@
 import { FieldError } from "./FieldError";
 
 function getErrorMessage(key: string) {
-  const errorMessages = require("./ErrorMessages.json");
+  const errorMessages = require("./../../ErrorMessages.json");
   return errorMessages[key];
 }
 

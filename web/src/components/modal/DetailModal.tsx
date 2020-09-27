@@ -68,7 +68,7 @@ export const DetailModal: React.FC<DetailModalProps> = ({
                 {home?.livingRooms} Salas &bull; {home?.parkingSpots} Vagas na
                 garagem
               </Text>
-              <Text mt={3}>{apartment?.description}</Text>
+              <Text mt={3}>{home?.description}</Text>
               <Text mt={3}>
                 <b>Aluguel</b> - R$ {home?.rent.toFixed(2)}
               </Text>

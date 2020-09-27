@@ -1,12 +1,12 @@
 import { Resolver } from "type-graphql";
 import { getRepository } from "typeorm";
+import { FieldError } from "../../utils/FieldError";
+import { Address } from "../Address/Address";
+import { AddressInput } from "../Address/AddressInput";
 import {
   ADDRESS_NOT_FOUND_ERROR,
   NO_ADDRESS_ERRORS,
-} from "../../../src/utils/Errors";
-import { FieldError } from "../../../src/utils/FieldError";
-import { Address } from "../Address/Address";
-import { AddressInput } from "../Address/AddressInput";
+} from "./../../utils/Errors";
 import { HouseInput } from "./House/HouseInput";
 
 @Resolver()

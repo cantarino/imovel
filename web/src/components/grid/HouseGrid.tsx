@@ -34,7 +34,7 @@ export const HouseGrid: React.FC<HouseGridProps> = () => {
   const [images, setImages] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
-      const result = await getImagesUrls("house", 100);
+      const result = await getImagesUrls("house", 200);
       setImages(result);
     };
 

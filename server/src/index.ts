@@ -6,6 +6,7 @@ import { buildGraphQLSchema } from "./config/Schema";
 
 const main = async () => {
   const conn = await createDatabaseConection();
+  await conn.runMigrations();
   const app = express();
   const apolloServer = new ApolloServer({
     schema: await buildGraphQLSchema(),

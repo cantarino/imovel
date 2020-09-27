@@ -23,7 +23,6 @@ export const SwitchField: React.FC<SwitchProps> = ({
   ...props
 }) => {
   const [field, { error }] = useField(props);
-  console.log(field);
   return (
     <FormControl className={className} isInvalid={!!error}>
       <FormLabel htmlFor={field.name}>{label}</FormLabel>

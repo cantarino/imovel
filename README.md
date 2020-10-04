@@ -30,4 +30,4 @@ To see the GraphQL queries and run them on your own:
 
 This was a 4 week long project built during my sixth semester at Computer Engineering. The project goal was to create a web app to register houses for buy and rental.
 
-Originally I wanted to force myself to learn new technologies, thus using node with Typescript and GraphQL and React with NextJs. I started this process by following a fullstack project example for node + react + graphql but soon I started doing my own thing.  
+Originally I wanted to force myself to learn new technologies, thus using node with Typescript and GraphQL and React with NextJs. I started this process by following a fullstack project example for node + react + graphql on this link [https://www.youtube.com/watch?v=I6ypD7qv3Z8&ab_channel=BenAwad] but soon I started doing my own thing.  
